@@ -15,7 +15,9 @@ namespace MR
         protected override void Configure(IContainerBuilder builder)
         {
             builder.RegisterComponentInHierarchy<MineField>();
-            builder.RegisterInstance(_GameConfig).AsSelf();
+            builder.RegisterInstance(_GameConfig);
+            builder.RegisterComponentInHierarchy<NextNumberPanel>()
+                .AsImplementedInterfaces();
         }
     }
 }

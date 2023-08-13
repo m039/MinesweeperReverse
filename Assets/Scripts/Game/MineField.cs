@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -26,7 +24,27 @@ namespace MR
         [Inject] IObjectResolver _container;
 
         MineCell[,] _cells;
+
         int[,] _bombsCount;
+
+        MineCell _selectedCell;
+
+        bool _isHoverEnabled;
+
+        public int SelectedNumber { get; set; } = 4;
+
+        public bool IsHoverEnabled {
+            get => _isHoverEnabled;
+            set {
+                if (_selectedCell != null && !value)
+                {
+                    _selectedCell.IndicatorType = MineCellIndicatorType.Empty;
+                    _selectedCell = null;
+                }
+
+                _isHoverEnabled = value;
+            }
+        }
 
         void Start()
         {
@@ -67,10 +85,11 @@ namespace MR
                 }
             }
 
-            OpenAllCells();
+            CalcBombData();
+            OpenEmptyCells();
         }
 
-        void OpenAllCells()
+        void CalcBombData()
         {
             var columns = _cells.GetLength(0);
             var rows = _cells.GetLength(1);
@@ -112,17 +131,84 @@ namespace MR
                     if (cell.IndicatorType == MineCellIndicatorType.Bomb)
                         continue;
 
-                    var count = countNearBombs(x, y);
+                    _bombsCount[x, y] = countNearBombs(x, y);
+                }
+            }
+        }
 
-                    if (count == 0)
+        void OpenEmptyCells()
+        {
+            var columns = _cells.GetLength(0);
+            var rows = _cells.GetLength(1);
+
+            for (int y = 0; y < columns; y++)
+            {
+                for (int x = 0; x < rows; x++)
+                {
+                    var cell = _cells[x, y];
+
+                    if (cell.IndicatorType == MineCellIndicatorType.Bomb)
+                        continue;
+
+                    if (_bombsCount[x, y] == 0)
                     {
                         cell.IsPressed = true;
                         cell.IndicatorType = MineCellIndicatorType.Empty;
                     }
-
-                    _bombsCount[x, y] = count;
                 }
             }
+        }
+
+        void Update()
+        {
+            if (IsHoverEnabled)
+            {
+                ProcessInput();
+            }
+        }
+
+        void ProcessInput()
+        {
+            var hoveredCell = GetHoveredCell();
+            if (hoveredCell != _selectedCell)
+            {
+                if (_selectedCell != null && !_selectedCell.IsPressed)
+                {
+                    _selectedCell.IndicatorType = MineCellIndicatorType.Empty;
+                }
+
+                if (hoveredCell != null && !hoveredCell.IsPressed)
+                {
+                    _selectedCell = hoveredCell;
+                }
+                else
+                {
+                    _selectedCell = null;
+                }
+
+                if (_selectedCell != null)
+                {
+                    _selectedCell.IndicatorType = MineCellIndicatorType.Number;
+                    _selectedCell.Number = SelectedNumber;
+                }
+            }
+        }
+
+        static readonly RaycastHit2D[] s_Cache = new RaycastHit2D[16];
+
+        MineCell GetHoveredCell()
+        {
+            var count = Physics2D.RaycastNonAlloc(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector3.zero, s_Cache);
+            for (int i = 0; i < count; i++)
+            {
+                var cell = s_Cache[i].transform.GetComponentInParent<MineCell>();
+                if (cell != null)
+                {
+                    return cell;
+                }
+            }
+
+            return null;
         }
     }
 }
