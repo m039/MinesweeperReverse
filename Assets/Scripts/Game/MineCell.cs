@@ -34,6 +34,8 @@ namespace MR
             set => SetNumber(value);
         }
 
+        public int BombCount { get; set; }
+
         MineCellIndicatorType _indicatorType = MineCellIndicatorType.Empty;
 
         bool _isPressed;

@@ -17,7 +17,9 @@ namespace MR
             builder.RegisterComponentInHierarchy<MineField>();
             builder.RegisterInstance(_GameConfig);
             builder.RegisterComponentInHierarchy<NextNumberPanel>()
-                .AsImplementedInterfaces();
+                .AsImplementedInterfaces()
+                .AsSelf();
+            builder.RegisterEntryPoint<GameController>();
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,27 +17,36 @@ namespace MR
 
         #endregion
 
+        public event System.Action<int> onNumberSelected;
+
         [Inject] IObjectResolver _container;
 
-        IEnumerator Start()
+        void Awake()
         {
             foreach (var mn in _MineNumbers)
             {
-                mn.gameObject.SetActive(false);
+                mn.onClick += OnMinNumberClicked;
             }
-
-            yield return new WaitForSeconds(1);
-
-            ShowNumbers(new int[] { 1, 2, 3, 4 });
         }
 
-        [ContextMenu("Show Numbers")]
-        public void ShowNumbers()
+        void OnDestroy()
         {
-            ShowNumbers(new int[] { 1, 2, 3, 4 });
+            foreach (var mn in _MineNumbers)
+            {
+                mn.onClick -= OnMinNumberClicked;
+            }
         }
 
-        public void ShowNumbers(int[] numbers)
+        void OnMinNumberClicked(MineNumber mineNumber)
+        {
+            foreach (var mn in _MineNumbers)
+            {
+                mn.IsOutlineSelected = mn == mineNumber;
+            }
+            onNumberSelected?.Invoke(mineNumber.Number);
+        }
+
+        public void ShowNumbers(IReadOnlyList<int> numbers)
         {
             foreach (var mn in _MineNumbers)
             {
@@ -45,13 +55,43 @@ namespace MR
 
             var delay = 0.1f;
 
-            for (int i = 0; i < numbers.Length; i++)
+            for (int i = 0; i < numbers.Count; i++)
             {
-                _MineNumbers[i].gameObject.SetActive(true);
-                _MineNumbers[i].Number = numbers[i];
-                _MineNumbers[i].SlideIn(_SlideInLocation.position, delay);
-                delay += 0.5f;
+                var mineNumber = _MineNumbers[i];
+                mineNumber.IsNumberEnabled = true;
+                mineNumber.IsOutlineEnabled = false;
+                mineNumber.gameObject.SetActive(true);
+                mineNumber.Number = numbers[i];
+                mineNumber.SlideIn(_SlideInLocation.position, delay, () => mineNumber.IsOutlineEnabled = true);
+                delay += 0.3f;
             }
+        }
+
+        public void HideSelectedNumber()
+        {
+            foreach (var mn in _MineNumbers)
+            {
+                if (mn.IsOutlineSelected)
+                {
+                    mn.IsOutlineSelected = false;
+                    mn.IsNumberEnabled = false;
+                }
+            }
+        }
+
+        public bool SelectNextNumber()
+        {
+            foreach (var mn in _MineNumbers)
+            {
+                if (mn.IsNumberEnabled)
+                {
+                    mn.IsOutlineSelected = true;
+                    onNumberSelected?.Invoke(mn.Number);
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         void IInitializable.Initialize()

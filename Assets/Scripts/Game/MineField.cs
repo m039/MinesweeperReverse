@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -21,21 +22,13 @@ namespace MR
 
         #endregion
 
-        [Inject] IObjectResolver _container;
-
-        MineCell[,] _cells;
-
-        int[,] _bombsCount;
-
-        MineCell _selectedCell;
-
-        bool _isHoverEnabled;
-
         public int SelectedNumber { get; set; } = 4;
 
-        public bool IsHoverEnabled {
+        public bool IsHoverEnabled
+        {
             get => _isHoverEnabled;
-            set {
+            set
+            {
                 if (_selectedCell != null && !value)
                 {
                     _selectedCell.IndicatorType = MineCellIndicatorType.Empty;
@@ -46,13 +39,20 @@ namespace MR
             }
         }
 
-        void Start()
-        {
-            ConstructField();
-        }
+        public event System.Action<MineCell> onPlaceNumber;
+
+        [Inject] IObjectResolver _container;
+
+        MineCell[,] _cells;
+
+        int[,] _bombsCount;
+
+        MineCell _selectedCell;
+
+        bool _isHoverEnabled;
 
         [ContextMenu("Construct Field")]
-        void ConstructField()
+        public void ConstructField()
         {
             if (!Application.isPlaying)
                 return;
@@ -132,6 +132,7 @@ namespace MR
                         continue;
 
                     _bombsCount[x, y] = countNearBombs(x, y);
+                    cell.BombCount = _bombsCount[x, y];
                 }
             }
         }
@@ -159,6 +160,29 @@ namespace MR
             }
         }
 
+        public List<int> GetNextNumbers()
+        {
+            var nextNumbers = new List<int>();
+            var columns = _cells.GetLength(0);
+            var rows = _cells.GetLength(1);
+
+            for (int y = 0; y < columns; y++)
+            {
+                for (int x = 0; x < rows; x++)
+                {
+                    var cell = _cells[x, y];
+
+                    if (cell.IndicatorType == MineCellIndicatorType.Bomb ||
+                        (cell.IsPressed & cell.IndicatorType == MineCellIndicatorType.Empty))
+                        continue;
+
+                    nextNumbers.Add(cell.BombCount);
+                }
+            }
+
+            return nextNumbers;
+        }
+
         void Update()
         {
             if (IsHoverEnabled)
@@ -169,6 +193,12 @@ namespace MR
 
         void ProcessInput()
         {
+            if (Input.GetMouseButtonUp(0) && _selectedCell != null)
+            {
+                onPlaceNumber?.Invoke(_selectedCell);
+                return;
+            }
+
             var hoveredCell = GetHoveredCell();
             if (hoveredCell != _selectedCell)
             {
