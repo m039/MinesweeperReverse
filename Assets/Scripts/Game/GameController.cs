@@ -46,6 +46,9 @@ namespace MR
                     ShowNextNumbers();
                     _nextNumberPanel.SelectNextNumber();
                 }
+            } else
+            {
+                mineCell.ShakeAndBlink();
             }
         }
 

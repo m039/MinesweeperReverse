@@ -1,3 +1,5 @@
+using DG.Tweening;
+using System.Collections;
 using UnityEngine;
 using VContainer;
 
@@ -11,6 +13,8 @@ namespace MR
         [SerializeField] BoxCollider2D _BodyCollider;
 
         [SerializeField] float _IconYOffset;
+
+        [SerializeField] Color _BlinkColor = Color.red;
 
         #endregion
 
@@ -112,6 +116,52 @@ namespace MR
         {
             _number.text = number.ToString();
             _number.color = _gameConfig.FindColorForNumber(number);
+        }
+
+        const float ShakeDuration = 0.6f;
+
+        const float ShakesCount = 25f;
+
+        Coroutine _shakeCoroutine;
+
+        Sequence _sequence;
+
+        const float ShakeOffset = 0.07f;
+
+        public void ShakeAndBlink()
+        {
+            var emptyCellRenderer = _emptyCell.GetComponent<SpriteRenderer>();
+
+            IEnumerator shake()
+            {
+                _icon.gameObject.SetActive(false);
+
+                for (int i = 0; i < ShakesCount; i++)
+                {
+                    _emptyCell.localPosition = new Vector2(Random.Range(-ShakeOffset, ShakeOffset), Random.Range(-ShakeOffset, ShakeOffset));
+                    yield return new WaitForSeconds(ShakeDuration / ShakesCount);
+                }
+
+                _icon.gameObject.SetActive(true);
+                _emptyCell.localPosition = Vector3.zero;
+            }
+
+            if (_shakeCoroutine != null)
+            {
+                StopCoroutine(_shakeCoroutine);
+            }
+
+            if (_sequence != null)
+            {
+                _sequence.Kill();
+            }
+
+            emptyCellRenderer.color = Color.white;
+            _sequence = DOTween.Sequence();
+            _sequence.Append(emptyCellRenderer.DOColor(_BlinkColor, ShakeDuration / 2f));
+            _sequence.Append(emptyCellRenderer.DOColor(Color.white, ShakeDuration / 2f));
+
+            _shakeCoroutine = StartCoroutine(shake());
         }
     }
 }

@@ -1,0 +1,105 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 280c384fb098fec48b19dd2f088d66be, type: 3}
+  m_Name: BasicLocalizationProfile
+  m_EditorClassIdentifier: 
+  defaultLanguage: {fileID: 969846672807714857}
+  languages:
+  - {fileID: 969846672807714857}
+  - {fileID: 1991677564306353750}
+  languageSelectors:
+  - rid: 362539029076377600
+  - rid: 362539029076377601
+  - rid: 362539029076377602
+  - rid: 362539029076377603
+  translations:
+  - key: GameName
+    phrases:
+    - language: {fileID: 969846672807714857}
+      text: "\u0421\u0430\u043F\u0435\u0440 \u043D\u0430\u043E\u0431\u043E\u0440\u043E\u0442"
+    - language: {fileID: 1991677564306353750}
+      text: Minesweeper Reverse
+    guid: f0a1cbd1-f1fe-46c0-b813-b44de45b801b
+  - key: PlayEasy
+    phrases:
+    - language: {fileID: 969846672807714857}
+      text: "\u0418\u0433\u0440\u0430\u0442\u044C (\u043B\u0435\u0433\u043A\u043E)"
+    - language: {fileID: 1991677564306353750}
+      text: Play (Easy)
+    guid: 6e4f5019-5aab-429c-9826-c0cb1951b8ed
+  - key: PlayHard
+    phrases:
+    - language: {fileID: 969846672807714857}
+      text: "\u0418\u0433\u0440\u0430\u0442\u044C (\u0441\u043B\u043E\u0436\u043D\u043E)"
+    - language: {fileID: 1991677564306353750}
+      text: Play (Hard)
+    guid: 4db15428-17f9-4390-afb7-2e4152dd198e
+  - key: Language
+    phrases:
+    - language: {fileID: 969846672807714857}
+      text: "\u0420\u0443\u0441\u0441\u043A\u0438\u0439"
+    - language: {fileID: 1991677564306353750}
+      text: English
+    guid: 1f98d178-5858-44b7-925d-d18b700a8890
+  - key: BestTimeFmt
+    phrases:
+    - language: {fileID: 969846672807714857}
+      text: "\u041B\u0443\u0447\u0448\u0435\u0435 \u0432\u0440\u0435\u043C\u044F:\n{0}"
+    - language: {fileID: 1991677564306353750}
+      text: 'Best Time:
+
+        {0}'
+    guid: 821f026b-8fcb-404e-9b40-124f15fbb76a
+  mainAsset: 0
+  editorData:
+    translateOnlyEmptyFields: 1
+  references:
+    version: 2
+    RefIds:
+    - rid: 362539029076377600
+      type: {class: CommandLineLanguageSelector, ns: m039.BasicLocalization, asm: BasicLocalization}
+      data:
+        commandLineArguments: -language=
+    - rid: 362539029076377601
+      type: {class: PlayerPrefLanguageSelector, ns: m039.BasicLocalization, asm: BasicLocalization}
+    - rid: 362539029076377602
+      type: {class: SystemLanguageSelector, ns: m039.BasicLocalization, asm: BasicLocalization}
+    - rid: 362539029076377603
+      type: {class: DefaultLanguageSelector, ns: m039.BasicLocalization, asm: BasicLocalization}
+--- !u!114 &969846672807714857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf275c55add28c04fad349b4b61ab7c9, type: 3}
+  m_Name: Russian
+  m_EditorClassIdentifier: 
+  languageId: Russian
+  locale: {fileID: 11400000, guid: 6e5d895ac27a14249851005136d1ec6c, type: 2}
+--- !u!114 &1991677564306353750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf275c55add28c04fad349b4b61ab7c9, type: 3}
+  m_Name: English
+  m_EditorClassIdentifier: 
+  languageId: English
+  locale: {fileID: 11400000, guid: c433c8f61ce59dd47a35bf39b9ae9b92, type: 2}

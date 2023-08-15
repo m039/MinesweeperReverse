@@ -50,6 +50,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _BodyCollider: {fileID: 4951505805658249153}
   _IconYOffset: 0.046
+  _BlinkColor: {r: 1, g: 0.2509804, b: 0.36862746, a: 1}
 --- !u!1 &4128673044434501774
 GameObject:
   m_ObjectHideFlags: 0
@@ -355,7 +356,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5920340007603817736
 Transform:
   m_ObjectHideFlags: 0
@@ -439,7 +440,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5920340008337861732
 Transform:
   m_ObjectHideFlags: 0
