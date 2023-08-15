@@ -20,6 +20,8 @@ namespace MR
                 .AsImplementedInterfaces()
                 .AsSelf();
             builder.RegisterEntryPoint<GameController>();
+            builder.RegisterComponentInHierarchy<HelpScreen>();
+            builder.RegisterComponentInHierarchy<GameTopPanel>();
         }
     }
 }

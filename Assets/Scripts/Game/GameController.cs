@@ -11,6 +11,10 @@ namespace MR
 
         [Inject] MineField _mineField;
 
+        [Inject] HelpScreen _helpScreen;
+
+        [Inject] GameTopPanel _topPanel;
+
         List<int> _nextNumbers;
 
         void IStartable.Start()
@@ -24,6 +28,11 @@ namespace MR
             _nextNumbers = _mineField.GetNextNumbers();
             _nextNumbers.Shuffle();
             ShowNextNumbers();
+
+            _helpScreen.Hide(true);
+            _helpScreen.BackButton.onClick.AddListener(OnHelpBackClicked);
+
+            _topPanel.QuestionButton.onClick.AddListener(OnQuestionClicked);
         }
 
         void System.IDisposable.Dispose()
@@ -31,6 +40,9 @@ namespace MR
             _mineField.onPlaceNumber -= OnPlaceNumer;
 
             _nextNumberPanel.onNumberSelected -= OnNumberSelected;
+
+            _topPanel.QuestionButton.onClick.RemoveListener(OnQuestionClicked);
+            _helpScreen.BackButton.onClick.RemoveListener(OnHelpBackClicked);
         }
 
         void OnPlaceNumer(MineCell mineCell)
@@ -56,6 +68,18 @@ namespace MR
         {
             _mineField.IsHoverEnabled = true;
             _mineField.SelectedNumber = number;
+        }
+
+        void OnQuestionClicked()
+        {
+            _mineField.IsHoverEnabled = false;
+            _helpScreen.Show();
+        }
+
+        void OnHelpBackClicked()
+        {
+            _mineField.IsHoverEnabled = true;
+            _helpScreen.Hide();
         }
 
         const int NextNumbersCount = 4;
