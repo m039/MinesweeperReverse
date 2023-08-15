@@ -1,6 +1,7 @@
 using m039.BasicLocalization;
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using VContainer;
 using VContainer.Unity;
 
@@ -16,6 +17,7 @@ namespace MR
         {
             _mainMenuView.NextLanguageButton.onClick.AddListener(OnSelectNextLanguageClicked);
             _mainMenuView.PreviousLanguageButton.onClick.AddListener(OnSelectPreviousLanguageClicked);
+            _mainMenuView.PlayEasyButton.onClick.AddListener(OnPlayEasyClicked);
             BasicLocalization.OnLanguageChanged += OnLanguageChanged;
 
             UpdateBestTimes();
@@ -25,7 +27,13 @@ namespace MR
         {
             _mainMenuView.NextLanguageButton.onClick.RemoveListener(OnSelectNextLanguageClicked);
             _mainMenuView.PreviousLanguageButton.onClick.RemoveListener(OnSelectPreviousLanguageClicked);
+            _mainMenuView.PlayEasyButton.onClick.RemoveListener(OnPlayEasyClicked);
             BasicLocalization.OnLanguageChanged -= OnLanguageChanged;
+        }
+
+        void OnPlayEasyClicked()
+        {
+            SceneManager.LoadScene(Consts.LevelEasyScene);
         }
 
         void OnSelectNextLanguageClicked()

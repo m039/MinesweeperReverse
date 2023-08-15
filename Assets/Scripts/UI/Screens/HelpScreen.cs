@@ -11,6 +11,21 @@ namespace MR
 
         #endregion
 
-        public Button BackButton => _BackButton;
+        protected override void Awake()
+        {
+            base.Awake();
+
+            _BackButton.onClick.AddListener(OnHelpBackClicked);
+        }
+
+        protected override void OnDestroy()
+        {
+            _BackButton.onClick.RemoveListener(OnHelpBackClicked);
+        }
+
+        void OnHelpBackClicked()
+        {
+            Hide();
+        }
     }
 }

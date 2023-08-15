@@ -1,6 +1,5 @@
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace MR
 {
@@ -12,14 +11,24 @@ namespace MR
 
         public bool IsAnimating { get; private set; }
 
+        public event System.Action onShow;
+
+        public event System.Action onHide;
+
         protected virtual void Awake()
         {
             Shadow = transform.Find("Shadow").GetComponent<CanvasGroup>();
             Container = transform.Find("Container").GetComponent<CanvasGroup>();
         }
 
+        protected virtual void OnDestroy()
+        {
+        }
+
         public void Show(bool immedate = false)
         {
+            onShow?.Invoke();
+
             Container.gameObject.SetActive(true);
             Shadow.gameObject.SetActive(true);
 
@@ -48,6 +57,7 @@ namespace MR
             {
                 Container.gameObject.SetActive(false);
                 Shadow.gameObject.SetActive(false);
+                onHide?.Invoke();
                 return;
             }
 
@@ -64,6 +74,7 @@ namespace MR
                     Container.gameObject.SetActive(false);
                     Shadow.gameObject.SetActive(false);
                     IsAnimating = false;
+                    onHide?.Invoke();
                 });
         }
     }

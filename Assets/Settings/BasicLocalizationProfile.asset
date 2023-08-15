@@ -89,6 +89,20 @@ MonoBehaviour:
         on the field such as the value of the number become equals of the number
         of mines around.
     guid: f4197f4d-d6b1-440b-aba8-32baa759fa2a
+  - key: Settings
+    phrases:
+    - language: {fileID: 969846672807714857}
+      text: "\u041D\u0430\u0441\u0442\u0440\u043E\u0439\u043A\u0438"
+    - language: {fileID: 1991677564306353750}
+      text: Settings
+    guid: 19e1443d-1149-40c2-8316-a738f7ea7462
+  - key: Settings.ToMainMenu
+    phrases:
+    - language: {fileID: 969846672807714857}
+      text: "\u0412 \u0433\u043B\u0430\u0432\u043D\u043E\u0435 \u043C\u0435\u043D\u044E"
+    - language: {fileID: 1991677564306353750}
+      text: To Main Menu
+    guid: 3db1f64a-6891-44a8-b7aa-2b09920128c0
   mainAsset: 0
   editorData:
     translateOnlyEmptyFields: 1

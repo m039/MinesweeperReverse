@@ -13,6 +13,8 @@ namespace MR
 
         [Inject] HelpScreen _helpScreen;
 
+        [Inject] SettingsScreen _settingsScreen;
+
         [Inject] GameTopPanel _topPanel;
 
         [Inject] HealthCounter _healthCounter;
@@ -32,9 +34,15 @@ namespace MR
             ShowNextNumbers();
 
             _helpScreen.Hide(true);
-            _helpScreen.BackButton.onClick.AddListener(OnHelpBackClicked);
+            _helpScreen.onShow += OnShowScreen;
+            _helpScreen.onHide += OnHideScreen;
+
+            _settingsScreen.Hide(true);
+            _settingsScreen.onShow += OnShowScreen;
+            _settingsScreen.onHide += OnHideScreen;
 
             _topPanel.QuestionButton.onClick.AddListener(OnQuestionClicked);
+            _topPanel.MenuButton.onClick.AddListener(OnMenuClicked);
         }
 
         void System.IDisposable.Dispose()
@@ -44,7 +52,13 @@ namespace MR
             _nextNumberPanel.onNumberSelected -= OnNumberSelected;
 
             _topPanel.QuestionButton.onClick.RemoveListener(OnQuestionClicked);
-            _helpScreen.BackButton.onClick.RemoveListener(OnHelpBackClicked);
+            _topPanel.MenuButton.onClick.RemoveListener(OnMenuClicked);
+
+            _helpScreen.onShow -= OnShowScreen;
+            _helpScreen.onHide -= OnHideScreen;
+
+            _settingsScreen.onShow -= OnShowScreen;
+            _settingsScreen.onHide -= OnHideScreen;
         }
 
         void OnPlaceNumer(MineCell mineCell)
@@ -80,14 +94,22 @@ namespace MR
 
         void OnQuestionClicked()
         {
-            _mineField.IsHoverEnabled = false;
             _helpScreen.Show();
         }
 
-        void OnHelpBackClicked()
+        void OnMenuClicked()
+        {
+            _settingsScreen.Show();
+        }
+
+        void OnShowScreen()
+        {
+            _mineField.IsHoverEnabled = false;
+        }
+
+        void OnHideScreen()
         {
             _mineField.IsHoverEnabled = true;
-            _helpScreen.Hide();
         }
 
         const int NextNumbersCount = 4;
