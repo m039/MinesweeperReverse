@@ -15,6 +15,8 @@ namespace MR
 
         [Inject] GameTopPanel _topPanel;
 
+        [Inject] HealthCounter _healthCounter;
+
         List<int> _nextNumbers;
 
         void IStartable.Start()
@@ -61,6 +63,12 @@ namespace MR
             } else
             {
                 mineCell.ShakeAndBlink();
+                if (_healthCounter.HeartCount > 0)
+                {
+                    _healthCounter.RemoveHeart(0.6f, () => {
+                        // TODO
+                    });
+                }
             }
         }
 

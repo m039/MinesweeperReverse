@@ -22,6 +22,7 @@ namespace MR
             builder.RegisterEntryPoint<GameController>();
             builder.RegisterComponentInHierarchy<HelpScreen>();
             builder.RegisterComponentInHierarchy<GameTopPanel>();
+            builder.RegisterComponentInHierarchy<HealthCounter>();
         }
     }
 }
