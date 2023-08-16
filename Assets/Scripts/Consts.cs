@@ -5,5 +5,7 @@ namespace MR
         public const string MenuItemRoot = "MR";
         public const string MainMenuScene = "MainMenu";
         public const string LevelEasyScene = "LevelEasy";
+        public const string LevelHardScene = "LevelHard";
+
     }
 }

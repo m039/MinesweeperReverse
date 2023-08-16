@@ -8,8 +8,6 @@ namespace MR
 {
     public class GameController : IStartable, System.IDisposable
     {
-        const int MaxNumberOfTries = 2;
-
         [Inject] NextNumberPanel _nextNumberPanel;
 
         [Inject] MineField _mineField;
@@ -36,12 +34,13 @@ namespace MR
 
         BaseScreen[] _screens;
 
-        int _numberOfTries = MaxNumberOfTries;
+        int _numberOfTries;
 
         bool _isNumberSelected = false;
 
         void IStartable.Start()
         {
+            _numberOfTries = _sceneData.NumberOfTries;
             _mineField.ConstructField();
             _mineField.IsHoverEnabled = false;
             _mineField.onPlaceNumber += OnPlaceNumer;

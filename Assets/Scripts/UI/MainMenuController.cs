@@ -18,6 +18,7 @@ namespace MR
             _mainMenuView.NextLanguageButton.onClick.AddListener(OnSelectNextLanguageClicked);
             _mainMenuView.PreviousLanguageButton.onClick.AddListener(OnSelectPreviousLanguageClicked);
             _mainMenuView.PlayEasyButton.onClick.AddListener(OnPlayEasyClicked);
+            _mainMenuView.PlayHardButton.onClick.AddListener(OnPlayHardClicked);
             BasicLocalization.OnLanguageChanged += OnLanguageChanged;
 
             UpdateBestTimes();
@@ -28,12 +29,18 @@ namespace MR
             _mainMenuView.NextLanguageButton.onClick.RemoveListener(OnSelectNextLanguageClicked);
             _mainMenuView.PreviousLanguageButton.onClick.RemoveListener(OnSelectPreviousLanguageClicked);
             _mainMenuView.PlayEasyButton.onClick.RemoveListener(OnPlayEasyClicked);
+            _mainMenuView.PlayHardButton.onClick.RemoveListener(OnPlayHardClicked);
             BasicLocalization.OnLanguageChanged -= OnLanguageChanged;
         }
 
         void OnPlayEasyClicked()
         {
             SceneManager.LoadScene(Consts.LevelEasyScene);
+        }
+
+        void OnPlayHardClicked()
+        {
+            SceneManager.LoadScene(Consts.LevelHardScene);
         }
 
         void OnSelectNextLanguageClicked()

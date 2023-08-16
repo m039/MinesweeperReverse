@@ -62,9 +62,10 @@ namespace MR
                 Destroy(child.gameObject);
             }
 
+            var cellGap = _CellGap;
             var dimensions = _MineCellPrefab.Dimensions;
-            var fieldWidth = (dimensions.x + _CellGap) * (_Columns - 1);
-            var fieldHeight = (dimensions.y + _CellGap) * (_Rows - 1);
+            var fieldWidth = (dimensions.x + cellGap) * (_Columns - 1);
+            var fieldHeight = (dimensions.y + cellGap) * (_Rows - 1);
             _cells = new MineCell[_Columns, _Rows];
 
             for (int y = 0; y < _Rows; y++)
@@ -72,8 +73,8 @@ namespace MR
                 for (int x = 0; x < _Columns; x++)
                 {
                     var cell = _container.Instantiate(_MineCellPrefab, transform);
-                    var xPosition = -fieldWidth / 2 + dimensions.x * x + x * _CellGap;
-                    var yPosition = -fieldHeight / 2 + dimensions.y * y + y * _CellGap;
+                    var xPosition = -fieldWidth / 2 + dimensions.x * x + x * cellGap;
+                    var yPosition = -fieldHeight / 2 + dimensions.y * y + y * cellGap;
                     cell.transform.localPosition = new Vector2(xPosition, yPosition);
 
                     if (Random.Range(0f, 1f) < _BombsPercent)

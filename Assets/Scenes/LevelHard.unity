@@ -250,6 +250,30 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5071466504868197269, guid: 4352b0a3889a5c340ad350d445609b67, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.55
+      objectReference: {fileID: 0}
+    - target: {fileID: 5071466504868197269, guid: 4352b0a3889a5c340ad350d445609b67, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.55
+      objectReference: {fileID: 0}
+    - target: {fileID: 5071466504868197269, guid: 4352b0a3889a5c340ad350d445609b67, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.55
+      objectReference: {fileID: 0}
+    - target: {fileID: 5071466504868197270, guid: 4352b0a3889a5c340ad350d445609b67, type: 3}
+      propertyPath: _Rows
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5071466504868197270, guid: 4352b0a3889a5c340ad350d445609b67, type: 3}
+      propertyPath: _Columns
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5071466504868197270, guid: 4352b0a3889a5c340ad350d445609b67, type: 3}
+      propertyPath: _BombsPercent
+      value: 0.35
+      objectReference: {fileID: 0}
     - target: {fileID: 5071466505004137633, guid: 4352b0a3889a5c340ad350d445609b67, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -273,6 +297,14 @@ PrefabInstance:
     - target: {fileID: 5071466505004137633, guid: 4352b0a3889a5c340ad350d445609b67, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5071466505308900453, guid: 4352b0a3889a5c340ad350d445609b67, type: 3}
+      propertyPath: _IsEasyLevel
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5071466505308900453, guid: 4352b0a3889a5c340ad350d445609b67, type: 3}
+      propertyPath: _NumberOfTries
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5071466505454091085, guid: 4352b0a3889a5c340ad350d445609b67, type: 3}
       propertyPath: m_SizeDelta.x
