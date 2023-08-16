@@ -26,6 +26,7 @@ namespace MR
             builder.RegisterComponentInHierarchy<WinScreen>();
             builder.RegisterComponentInHierarchy<GameTopPanel>();
             builder.RegisterComponentInHierarchy<HealthCounter>();
+            builder.RegisterComponentInHierarchy<ConfettiController>();
         }
     }
 }

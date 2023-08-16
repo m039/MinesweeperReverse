@@ -51,6 +51,7 @@ namespace MR
             foreach (var mn in _MineNumbers)
             {
                 mn.gameObject.SetActive(false);
+                mn.IsNumberEnabled = false;
             }
 
             var delay = 0.1f;

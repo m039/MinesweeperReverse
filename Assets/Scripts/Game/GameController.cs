@@ -26,6 +26,8 @@ namespace MR
 
         [Inject] HealthCounter _healthCounter;
 
+        [Inject] ConfettiController _confettiController;
+
         List<int> _nextNumbers;
 
         BaseScreen[] _screens;
@@ -96,7 +98,8 @@ namespace MR
                     ShowNextNumbers();
                     if (!_nextNumberPanel.SelectNextNumber())
                     {
-                        _winScreen.Show();
+                        _confettiController.Play();
+                        DOVirtual.DelayedCall(0.3f, () => _winScreen.Show());
                     }
                 }
             } else
