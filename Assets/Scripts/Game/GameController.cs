@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
 using VContainer;
@@ -7,6 +8,8 @@ namespace MR
 {
     public class GameController : IStartable, System.IDisposable
     {
+        const int MaxNumberOfTries = 2;
+
         [Inject] NextNumberPanel _nextNumberPanel;
 
         [Inject] MineField _mineField;
@@ -15,11 +18,17 @@ namespace MR
 
         [Inject] SettingsScreen _settingsScreen;
 
+        [Inject] LoseScreen _loseScreen;
+
         [Inject] GameTopPanel _topPanel;
 
         [Inject] HealthCounter _healthCounter;
 
         List<int> _nextNumbers;
+
+        BaseScreen[] _screens;
+
+        int _numberOfTries = MaxNumberOfTries;
 
         void IStartable.Start()
         {
@@ -33,13 +42,21 @@ namespace MR
             _nextNumbers.Shuffle();
             ShowNextNumbers();
 
-            _helpScreen.Hide(true);
-            _helpScreen.onShow += OnShowScreen;
-            _helpScreen.onHide += OnHideScreen;
+            _screens = new BaseScreen[]
+            {
+                _helpScreen,
+                _settingsScreen,
+                _loseScreen
+            };
 
-            _settingsScreen.Hide(true);
-            _settingsScreen.onShow += OnShowScreen;
-            _settingsScreen.onHide += OnHideScreen;
+            foreach (var screen in _screens)
+            {
+                screen.Hide(true);
+                screen.onShow += OnShowScreen;
+                screen.onHide += OnHideScreen;
+            }
+
+            _loseScreen.ContinueButton.onClick.AddListener(OnContinueClicked);
 
             _topPanel.QuestionButton.onClick.AddListener(OnQuestionClicked);
             _topPanel.MenuButton.onClick.AddListener(OnMenuClicked);
@@ -54,11 +71,13 @@ namespace MR
             _topPanel.QuestionButton.onClick.RemoveListener(OnQuestionClicked);
             _topPanel.MenuButton.onClick.RemoveListener(OnMenuClicked);
 
-            _helpScreen.onShow -= OnShowScreen;
-            _helpScreen.onHide -= OnHideScreen;
+            foreach (var screen in _screens)
+            {
+                screen.onShow -= OnShowScreen;
+                screen.onHide -= OnHideScreen;
+            }
 
-            _settingsScreen.onShow -= OnShowScreen;
-            _settingsScreen.onHide -= OnHideScreen;
+            _loseScreen.ContinueButton.onClick.RemoveListener(OnContinueClicked);
         }
 
         void OnPlaceNumer(MineCell mineCell)
@@ -76,11 +95,19 @@ namespace MR
                 }
             } else
             {
-                mineCell.ShakeAndBlink();
                 if (_healthCounter.HeartCount > 0)
                 {
+                    if (_healthCounter.HeartCount == 1)
+                    {
+                        _mineField.IsHoverEnabled = false;
+                    }
+
+                    mineCell.ShakeAndBlink();
                     _healthCounter.RemoveHeart(0.6f, () => {
-                        // TODO
+                        if (_healthCounter.HeartCount <= 0)
+                        {
+                            DOVirtual.DelayedCall(0.5f, () => _loseScreen.Show());
+                        }
                     });
                 }
             }
@@ -110,6 +137,18 @@ namespace MR
         void OnHideScreen()
         {
             _mineField.IsHoverEnabled = true;
+        }
+
+        void OnContinueClicked()
+        {
+            _loseScreen.Hide();
+            _healthCounter.AddHeart(0.6f, null);
+            _numberOfTries--;
+
+            if (_numberOfTries == 0)
+            {
+                _loseScreen.ContinueButton.gameObject.SetActive(false);
+            }
         }
 
         const int NextNumbersCount = 4;
