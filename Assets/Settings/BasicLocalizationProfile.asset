@@ -108,7 +108,7 @@ MonoBehaviour:
     - language: {fileID: 969846672807714857}
       text: "\u0412\u044B \u043F\u0440\u043E\u0438\u0433\u0440\u0430\u043B\u0438"
     - language: {fileID: 1991677564306353750}
-      text: Game Over
+      text: You Lose
     guid: 036cdb32-8173-425f-bcf4-adfac3c00fb8
   - key: Lose.Restart
     phrases:
@@ -124,6 +124,13 @@ MonoBehaviour:
     - language: {fileID: 1991677564306353750}
       text: Continue
     guid: e781a069-ddf4-40fa-a497-ecdfff3ef873
+  - key: Win.Title
+    phrases:
+    - language: {fileID: 969846672807714857}
+      text: "\u0412\u044B \u043F\u043E\u0431\u0435\u0434\u0438\u043B\u0438!"
+    - language: {fileID: 1991677564306353750}
+      text: You Win!
+    guid: e77f9149-38cc-4db3-9db4-c558141f0692
   mainAsset: 0
   editorData:
     translateOnlyEmptyFields: 1

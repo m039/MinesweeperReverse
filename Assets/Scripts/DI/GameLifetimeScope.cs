@@ -23,6 +23,7 @@ namespace MR
             builder.RegisterComponentInHierarchy<HelpScreen>();
             builder.RegisterComponentInHierarchy<SettingsScreen>();
             builder.RegisterComponentInHierarchy<LoseScreen>();
+            builder.RegisterComponentInHierarchy<WinScreen>();
             builder.RegisterComponentInHierarchy<GameTopPanel>();
             builder.RegisterComponentInHierarchy<HealthCounter>();
         }

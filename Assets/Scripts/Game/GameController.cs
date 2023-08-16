@@ -20,6 +20,8 @@ namespace MR
 
         [Inject] LoseScreen _loseScreen;
 
+        [Inject] WinScreen _winScreen;
+
         [Inject] GameTopPanel _topPanel;
 
         [Inject] HealthCounter _healthCounter;
@@ -46,7 +48,8 @@ namespace MR
             {
                 _helpScreen,
                 _settingsScreen,
-                _loseScreen
+                _loseScreen,
+                _winScreen
             };
 
             foreach (var screen in _screens)
@@ -91,7 +94,10 @@ namespace MR
                 if (!_nextNumberPanel.SelectNextNumber())
                 {
                     ShowNextNumbers();
-                    _nextNumberPanel.SelectNextNumber();
+                    if (!_nextNumberPanel.SelectNextNumber())
+                    {
+                        _winScreen.Show();
+                    }
                 }
             } else
             {
