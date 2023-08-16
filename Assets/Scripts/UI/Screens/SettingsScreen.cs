@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using VContainer;
 
 namespace MR
 {
@@ -13,12 +14,14 @@ namespace MR
 
         #endregion
 
+        [Inject] AudioController _audioController;
+
         protected override void Awake()
         {
             base.Awake();
 
             _MusicDisable.gameObject.SetActive(false);
-            _SoundDisable.gameObject.SetActive(false);
+            UpdateSoundDisable();
         }
 
         public void OnGoToMainMenuClick()
@@ -33,7 +36,13 @@ namespace MR
 
         public void OnSoundClick()
         {
-            _SoundDisable.gameObject.SetActive(!_SoundDisable.gameObject.activeSelf);
+            _audioController.SetSoundEnabled(!_audioController.IsSoundEnabled());
+            UpdateSoundDisable();
+        }
+
+        void UpdateSoundDisable()
+        {
+            _SoundDisable.gameObject.SetActive(!_audioController.IsSoundEnabled());
         }
     }
 }

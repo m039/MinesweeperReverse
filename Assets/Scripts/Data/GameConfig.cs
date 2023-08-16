@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace MR
@@ -12,11 +13,22 @@ namespace MR
             public Color color;
         }
 
+        [System.Serializable]
+        public class AudioMapping
+        {
+            public SoundId soundId;
+            public AudioClip audioClip;
+        }
+
         #region Inspector
 
         [SerializeField] NumberColorMapping[] _NumberColorMappings;
 
+        [SerializeField] AudioMapping[] _AudioMappings;
+
         #endregion
+
+        public IReadOnlyList<AudioMapping> AudioMappings => _AudioMappings;
 
         public Color FindColorForNumber(int number)
         {

@@ -15,13 +15,14 @@ namespace MR
         protected override void Configure(IContainerBuilder builder)
         {
             builder.RegisterComponentInHierarchy<MineField>();
-            builder.Register<ProgressService>(Lifetime.Singleton)
-                .AsSelf();
+            builder.Register<ProgressService>(Lifetime.Singleton);
             builder.RegisterInstance(_GameConfig);
             builder.RegisterComponentInHierarchy<NextNumberPanel>()
                 .AsImplementedInterfaces()
                 .AsSelf();
             builder.RegisterEntryPoint<GameController>();
+            builder.RegisterEntryPoint<AudioController>()
+                .AsSelf();
             builder.RegisterComponentInHierarchy<HelpScreen>();
             builder.RegisterComponentInHierarchy<SettingsScreen>();
             builder.RegisterComponentInHierarchy<LoseScreen>();

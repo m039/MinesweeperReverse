@@ -30,6 +30,8 @@ namespace MR
 
         [Inject] SceneData _sceneData;
 
+        [Inject] AudioController _audioController;
+
         List<int> _nextNumbers;
 
         BaseScreen[] _screens;
@@ -98,6 +100,8 @@ namespace MR
                 mineCell.IsPressed = true;
                 mineCell.Number = mineCell.BombCount;
 
+                _audioController.Play(SoundId.CellClickGood);
+
                 _nextNumberPanel.HideSelectedNumber();
                 if (!_nextNumberPanel.SelectNextNumber())
                 {
@@ -108,6 +112,7 @@ namespace MR
                         _mainControls.GameTimer.StopTimer();
                         DOVirtual.DelayedCall(0.3f, () =>
                         {
+                            _audioController.Play(SoundId.WinScreenOpen);
                             if (_sceneData.IsEasyLevel)
                             {
                                 _progressService.SetBestTimeEasy(_mainControls.GameTimer.Seconds);
@@ -123,6 +128,7 @@ namespace MR
             } else
             {
                 var healthCounter = _mainControls.HealthCounter;
+                _audioController.Play(SoundId.CellClickBad);
 
                 if (healthCounter.HeartCount > 0)
                 {
@@ -136,7 +142,11 @@ namespace MR
                     healthCounter.RemoveHeart(0.6f, () => {
                         if (healthCounter.HeartCount <= 0)
                         {
-                            DOVirtual.DelayedCall(0.5f, () => _loseScreen.Show());
+                            DOVirtual.DelayedCall(0.5f, () =>
+                            {
+                                _audioController.Play(SoundId.LoseScreenOpen);
+                                _loseScreen.Show();
+                            });
                         }
                     });
                 }
