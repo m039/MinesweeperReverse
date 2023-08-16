@@ -6,14 +6,36 @@ namespace MR
 {
     public class ProgressService
     {
+        const string BestTimeEasyKey = "best_time_easy_key_seconds";
+
+        const string BestTimeHardKey = "best_time_hard_key_seconds";
+
+        public void SetBestTimeEasy(int seconds)
+        {
+            var oldSeconds = GetBestTimeInSecondsEasy();
+            if (seconds > oldSeconds && oldSeconds > 0)
+                return;
+
+            PlayerPrefs.SetInt(BestTimeEasyKey, seconds);
+        }
+
+        public void SetBestTimeHard(int seconds)
+        {
+            var oldSeconds = GetBestTimeInSecondsHard();
+            if (seconds > oldSeconds && oldSeconds > 0)
+                return;
+
+            PlayerPrefs.SetInt(BestTimeHardKey, seconds);
+        }
+
         public int GetBestTimeInSecondsEasy()
         {
-            return 60 * 2 + 33;
+            return PlayerPrefs.GetInt(BestTimeEasyKey, -1);
         }
 
         public int GetBestTimeInSecondsHard()
         {
-            return -1;
+            return PlayerPrefs.GetInt(BestTimeHardKey, -1);
         }
     }
 }

@@ -22,17 +22,21 @@ namespace MR
 
         [Inject] WinScreen _winScreen;
 
-        [Inject] GameTopPanel _topPanel;
-
-        [Inject] HealthCounter _healthCounter;
+        [Inject] MainControls _mainControls;
 
         [Inject] ConfettiController _confettiController;
+
+        [Inject] ProgressService _progressService;
+
+        [Inject] SceneData _sceneData;
 
         List<int> _nextNumbers;
 
         BaseScreen[] _screens;
 
         int _numberOfTries = MaxNumberOfTries;
+
+        bool _isNumberSelected = false;
 
         void IStartable.Start()
         {
@@ -63,8 +67,10 @@ namespace MR
 
             _loseScreen.ContinueButton.onClick.AddListener(OnContinueClicked);
 
-            _topPanel.QuestionButton.onClick.AddListener(OnQuestionClicked);
-            _topPanel.MenuButton.onClick.AddListener(OnMenuClicked);
+            _mainControls.QuestionButton.onClick.AddListener(OnQuestionClicked);
+            _mainControls.MenuButton.onClick.AddListener(OnMenuClicked);
+
+            _mainControls.GameTimer.StartTimer();
         }
 
         void System.IDisposable.Dispose()
@@ -73,8 +79,8 @@ namespace MR
 
             _nextNumberPanel.onNumberSelected -= OnNumberSelected;
 
-            _topPanel.QuestionButton.onClick.RemoveListener(OnQuestionClicked);
-            _topPanel.MenuButton.onClick.RemoveListener(OnMenuClicked);
+            _mainControls.QuestionButton.onClick.RemoveListener(OnQuestionClicked);
+            _mainControls.MenuButton.onClick.RemoveListener(OnMenuClicked);
 
             foreach (var screen in _screens)
             {
@@ -99,21 +105,36 @@ namespace MR
                     if (!_nextNumberPanel.SelectNextNumber())
                     {
                         _confettiController.Play();
-                        DOVirtual.DelayedCall(0.3f, () => _winScreen.Show());
+                        _mainControls.GameTimer.StopTimer();
+                        DOVirtual.DelayedCall(0.3f, () =>
+                        {
+                            if (_sceneData.IsEasyLevel)
+                            {
+                                _progressService.SetBestTimeEasy(_mainControls.GameTimer.Seconds);
+                            } else
+                            {
+                                _progressService.SetBestTimeHard(_mainControls.GameTimer.Seconds);
+                            }
+                            _winScreen.GameTimer.Seconds = _mainControls.GameTimer.Seconds;
+                            _winScreen.Show();
+                        });
                     }
                 }
             } else
             {
-                if (_healthCounter.HeartCount > 0)
+                var healthCounter = _mainControls.HealthCounter;
+
+                if (healthCounter.HeartCount > 0)
                 {
-                    if (_healthCounter.HeartCount == 1)
+                    if (healthCounter.HeartCount == 1)
                     {
+                        _mainControls.GameTimer.StopTimer();
                         _mineField.IsHoverEnabled = false;
                     }
 
                     mineCell.ShakeAndBlink();
-                    _healthCounter.RemoveHeart(0.6f, () => {
-                        if (_healthCounter.HeartCount <= 0)
+                    healthCounter.RemoveHeart(0.6f, () => {
+                        if (healthCounter.HeartCount <= 0)
                         {
                             DOVirtual.DelayedCall(0.5f, () => _loseScreen.Show());
                         }
@@ -126,6 +147,7 @@ namespace MR
         {
             _mineField.IsHoverEnabled = true;
             _mineField.SelectedNumber = number;
+            _isNumberSelected = true;
         }
 
         void OnQuestionClicked()
@@ -140,18 +162,18 @@ namespace MR
 
         void OnShowScreen()
         {
-            _mineField.IsHoverEnabled = false;
+            _mineField.IsHoverEnabled = false && _isNumberSelected;
         }
 
         void OnHideScreen()
         {
-            _mineField.IsHoverEnabled = true;
+            _mineField.IsHoverEnabled = true && _isNumberSelected;
         }
 
         void OnContinueClicked()
         {
             _loseScreen.Hide();
-            _healthCounter.AddHeart(0.6f, null);
+            _mainControls.HealthCounter.AddHeart(0.6f, null);
             _numberOfTries--;
 
             if (_numberOfTries == 0)

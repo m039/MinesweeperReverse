@@ -15,6 +15,8 @@ namespace MR
         protected override void Configure(IContainerBuilder builder)
         {
             builder.RegisterComponentInHierarchy<MineField>();
+            builder.Register<ProgressService>(Lifetime.Singleton)
+                .AsSelf();
             builder.RegisterInstance(_GameConfig);
             builder.RegisterComponentInHierarchy<NextNumberPanel>()
                 .AsImplementedInterfaces()
@@ -24,9 +26,10 @@ namespace MR
             builder.RegisterComponentInHierarchy<SettingsScreen>();
             builder.RegisterComponentInHierarchy<LoseScreen>();
             builder.RegisterComponentInHierarchy<WinScreen>();
-            builder.RegisterComponentInHierarchy<GameTopPanel>();
+            builder.RegisterComponentInHierarchy<MainControls>();
             builder.RegisterComponentInHierarchy<HealthCounter>();
             builder.RegisterComponentInHierarchy<ConfettiController>();
+            builder.RegisterComponentInHierarchy<SceneData>();
         }
     }
 }

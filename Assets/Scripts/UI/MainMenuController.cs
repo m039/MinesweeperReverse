@@ -63,7 +63,7 @@ namespace MR
                 {
                     group.gameObject.SetActive(true);
                     var bestTimeTs = new TimeSpan(0, 0, bestTime);
-                    text.text = string.Format(BasicLocalization.GetTranslation("BestTimeFmt"), bestTimeTs.ToString("hh':'mm':'ss"));
+                    text.text = string.Format(BasicLocalization.GetTranslation("BestTimeFmt"), bestTimeTs.ToString("mm':'ss"));
                 }
             }
 
