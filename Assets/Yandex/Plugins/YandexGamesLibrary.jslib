@@ -20,10 +20,10 @@ mergeInto(LibraryManager.library, {
 	},
 
     SetLeaderboardScoreInternal: function(leaderboard, number) {
-        ysdk.getLeaderboards().then(lb => {
-            var lb = UTF8ToString(data);
+        var name = UTF8ToString(leaderboard);
 
-            lb.setLeaderboardScore(lb, number);
+        ysdk.getLeaderboards().then(lb => {
+            lb.setLeaderboardScore(name, number);
         });
     },
 
