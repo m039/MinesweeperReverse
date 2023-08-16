@@ -87,6 +87,9 @@ namespace MR
             {
                 _mainControls.GameTimer.StartTimer();
             }
+
+            YandexMetrikaManager.Instance.ReachGoal("start_game_" + (_sceneData.IsEasyLevel ? "easy" : "hard"));
+            YandexGamesManager.Instance.ShowFullscreenAdv();
         }
 
         void System.IDisposable.Dispose()
@@ -136,6 +139,19 @@ namespace MR
                             }
                             _winScreen.GameTimer.Seconds = _mainControls.GameTimer.Seconds;
                             _winScreen.Show();
+
+                            YandexMetrikaManager.Instance.ReachGoal("game_completed_" + (_sceneData.IsEasyLevel ? "easy" : "hard"));
+
+                            YandexGamesManager.Instance.UploadGameData(new YandexGamesManager.YandexGameData
+                            {
+                                bestTimeEasy = _progressService.GetBestTimeInSecondsEasy(),
+                                bestTimeHard = _progressService.GetBestTimeInSecondsHard()
+                            });
+
+                            YandexGamesManager.Instance.SetLeaderboardScore(
+                                _sceneData.IsEasyLevel ? "leaderboardeasy" : "leaderboardhard",
+                                _mainControls.GameTimer.Seconds
+                                );
                         });
                     }
                 }
@@ -199,14 +215,22 @@ namespace MR
 
         void OnContinueClicked()
         {
-            _loseScreen.Hide();
-            _mainControls.HealthCounter.AddHeart(0.6f, null);
-            _numberOfTries--;
-
-            if (_numberOfTries == 0)
+            void oneShot(bool wasShown)
             {
-                _loseScreen.ContinueButton.gameObject.SetActive(false);
-            }
+                _loseScreen.Hide();
+                _mainControls.HealthCounter.AddHeart(0.6f, null);
+                _numberOfTries--;
+
+                if (_numberOfTries == 0)
+                {
+                    _loseScreen.ContinueButton.gameObject.SetActive(false);
+                }
+
+                YandexGamesManager.Instance.onRewardedVideoClosed -= oneShot;
+            };
+
+            YandexGamesManager.Instance.onRewardedVideoClosed += oneShot;
+            YandexGamesManager.Instance.ShowRewardedVideo();
         }
 
         const int NextNumbersCount = 4;

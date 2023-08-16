@@ -19,6 +19,7 @@ MonoBehaviour:
   languageSelectors:
   - rid: 362539029076377600
   - rid: 362539029076377601
+  - rid: 362539048361525248
   - rid: 362539029076377602
   - rid: 362539029076377603
   translations:
@@ -147,6 +148,8 @@ MonoBehaviour:
       type: {class: SystemLanguageSelector, ns: m039.BasicLocalization, asm: BasicLocalization}
     - rid: 362539029076377603
       type: {class: DefaultLanguageSelector, ns: m039.BasicLocalization, asm: BasicLocalization}
+    - rid: 362539048361525248
+      type: {class: YandexLanguageSelector, ns: MR, asm: Assembly-CSharp}
 --- !u!114 &969846672807714857
 MonoBehaviour:
   m_ObjectHideFlags: 0
