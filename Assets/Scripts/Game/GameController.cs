@@ -8,6 +8,8 @@ namespace MR
 {
     public class GameController : IStartable, System.IDisposable
     {
+        const string ShowHelpAtFirstStartKey = "show_help_at_first_start_key";
+
         [Inject] NextNumberPanel _nextNumberPanel;
 
         [Inject] MineField _mineField;
@@ -37,6 +39,8 @@ namespace MR
         int _numberOfTries;
 
         bool _isNumberSelected = false;
+
+        System.Action _onShowHelpAtFirstStart;
 
         void IStartable.Start()
         {
@@ -71,7 +75,18 @@ namespace MR
             _mainControls.QuestionButton.onClick.AddListener(OnQuestionClicked);
             _mainControls.MenuButton.onClick.AddListener(OnMenuClicked);
 
-            _mainControls.GameTimer.StartTimer();
+            if (!PlayerPrefs.HasKey(ShowHelpAtFirstStartKey))
+            {
+                _onShowHelpAtFirstStart = () =>
+                {
+                    PlayerPrefs.SetInt(ShowHelpAtFirstStartKey, 1);
+                    _mainControls.GameTimer.StartTimer();
+                };
+                _helpScreen.Show(true);
+            } else
+            {
+                _mainControls.GameTimer.StartTimer();
+            }
         }
 
         void System.IDisposable.Dispose()
@@ -177,6 +192,9 @@ namespace MR
         void OnHideScreen()
         {
             _mineField.IsHoverEnabled = true && _isNumberSelected;
+
+            _onShowHelpAtFirstStart?.Invoke();
+            _onShowHelpAtFirstStart = null;
         }
 
         void OnContinueClicked()
