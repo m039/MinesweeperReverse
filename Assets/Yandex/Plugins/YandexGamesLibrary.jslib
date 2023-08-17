@@ -46,12 +46,12 @@ mergeInto(LibraryManager.library, {
         var dataString = UTF8ToString(data);
         var myobj = JSON.parse(dataString);
         player.setData(myobj);
-      },
+    },
 
-      YG_getData: function() {
+    YG_getData: function() {
         player.getData().then(_data => {
             const myJSON = JSON.stringify(_data);
             unityInstance.SendMessage('YandexGamesManager', 'OnGetData', myJSON);
         });
-     },
+    },
   });
