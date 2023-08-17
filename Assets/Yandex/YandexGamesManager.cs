@@ -95,17 +95,17 @@ namespace MR
 #endif
         }
 
-        public void OnShowFullscreenAdvClosed(string wasShown)
+        void OnShowFullscreenAdvClosed(string wasShown)
         {
             onShowFullscreenAdvClosed?.Invoke(bool.Parse(wasShown));
         }
 
-        public void OnShowRewardedVideoClosed(string wasShown)
+        void OnShowRewardedVideoClosed(string wasShown)
         {
             onShowRewardedVideoClosed?.Invoke(bool.Parse(wasShown));
         }
 
-        public void OnShowRewardedVideoRewarded()
+        void OnShowRewardedVideoRewarded()
         {
             onShowRewardedVideoRewarded?.Invoke();
         }
@@ -124,7 +124,7 @@ namespace MR
 #endif
         }
 
-        public void OnGetData(string gameData)
+        void OnGetData(string gameData)
         {
             onGetData?.Invoke(gameData);
         }
