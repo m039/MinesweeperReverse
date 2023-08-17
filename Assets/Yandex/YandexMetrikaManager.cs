@@ -1,13 +1,27 @@
-using System.Collections;
-using System.Collections.Generic;
+#if UNITY_WEBGL && !UNITY_EDITOR
 using System.Runtime.InteropServices;
+#endif
+
 using UnityEngine;
 
 namespace MR
 {
     public class YandexMetrikaManager : MonoBehaviour
     {
-        public static YandexMetrikaManager Instance;
+        static YandexMetrikaManager s_Instance;
+
+        static public YandexMetrikaManager Instance
+        {
+            get
+            {
+                if (ReferenceEquals(s_Instance, null))
+                {
+                    return FindObjectOfType<YandexMetrikaManager>();
+                }
+
+                return s_Instance;
+            }
+        }
 
 #if UNITY_WEBGL && !UNITY_EDITOR
         [DllImport("__Internal")]
@@ -33,9 +47,9 @@ namespace MR
 
         void Awake()
         {
-            if (Instance == null)
+            if (s_Instance == null)
             {
-                Instance = this;
+                s_Instance = this;
                 transform.SetParent(null);
                 DontDestroyOnLoad(gameObject);
             }

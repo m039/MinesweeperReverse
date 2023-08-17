@@ -1,14 +1,27 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+#if !UNITY_EDITOR && UNITY_WEBGL
 using System.Runtime.InteropServices;
+#endif
+
 using UnityEngine;
 
 namespace MR
 {
     public class YandexGamesManager : MonoBehaviour
     {
-        static public YandexGamesManager Instance;
+        static YandexGamesManager s_Instance;
+
+        static public YandexGamesManager Instance
+        {
+            get
+            {
+                if (ReferenceEquals(s_Instance, null))
+                {
+                    return FindObjectOfType<YandexGamesManager>();
+                }
+
+                return s_Instance;
+            }
+        }
 
         public System.Action<string> onDownloadGameData;
 
@@ -20,9 +33,9 @@ namespace MR
 
         private void Awake()
         {
-            if (Instance == null)
+            if (s_Instance == null)
             {
-                Instance = this;
+                s_Instance = this;
                 gameObject.transform.SetParent(null);
                 DontDestroyOnLoad(gameObject);
             }
