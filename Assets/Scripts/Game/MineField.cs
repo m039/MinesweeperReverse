@@ -83,6 +83,7 @@ namespace MR
                         cell.IndicatorType = MineCellIndicatorType.Bomb;
                     }
                     _cells[x, y] = cell;
+                    cell.Position = new Vector2Int(x, y);
                 }
             }
 
@@ -159,6 +160,38 @@ namespace MR
                     }
                 }
             }
+        }
+
+        public List<MineCell> GetNearbyBombs(MineCell cell)
+        {
+            var columns = _cells.GetLength(0);
+            var rows = _cells.GetLength(1);
+
+            bool isBomb(int x, int y)
+            {
+                if (x < 0 || y < 0 || x >= columns || y >= rows)
+                    return false;
+
+                return _cells[x, y].IndicatorType == MineCellIndicatorType.Bomb;
+            }
+
+            var result = new List<MineCell>();
+
+            for (int i = -1; i < 2; i++)
+            {
+                for (int j = -1; j < 2; j++)
+                {
+                    var x = cell.Position.x + i;
+                    var y = cell.Position.y + j;
+
+                    if (isBomb(x, y))
+                    {
+                        result.Add(_cells[x, y]);
+                    }
+                }
+            }
+
+            return result;
         }
 
         public List<int> GetNextNumbers()

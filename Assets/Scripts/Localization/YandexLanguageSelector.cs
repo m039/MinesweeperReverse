@@ -22,7 +22,7 @@ namespace MR
 
         public override BasicLocalizationLanguage GetLanguage(BasicLocalizationProfile profile)
         {
-            var yandexGamesManager = GameObject.FindAnyObjectByType<YandexGamesManager>();
+            var yandexGamesManager = Object.FindAnyObjectByType<YandexGamesManager>();
             return FindLanguage(profile, yandexGamesManager.GetLangCode());
         }
 

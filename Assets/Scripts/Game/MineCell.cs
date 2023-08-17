@@ -40,6 +40,8 @@ namespace MR
 
         public int BombCount { get; set; }
 
+        public Vector2Int Position { get; set; }
+
         MineCellIndicatorType _indicatorType = MineCellIndicatorType.Empty;
 
         bool _isPressed;
@@ -128,10 +130,26 @@ namespace MR
 
         const float ShakeOffset = 0.07f;
 
-        public void ShakeAndBlink()
+        public void Blink()
         {
-            var emptyCellRenderer = _emptyCell.GetComponent<SpriteRenderer>();
+            SpriteRenderer renderer;
 
+            if (IsPressed)
+            {
+                renderer = _pressedCell.GetComponent<SpriteRenderer>();
+            } else
+            {
+                renderer = _emptyCell.GetComponent<SpriteRenderer>();
+            }
+
+            renderer.color = Color.white;
+            _sequence = DOTween.Sequence();
+            _sequence.Append(renderer.DOColor(_BlinkColor, ShakeDuration / 2f));
+            _sequence.Append(renderer.DOColor(Color.white, ShakeDuration / 2f));
+        }
+
+        public void Shake()
+        {
             IEnumerator shake()
             {
                 _icon.gameObject.SetActive(false);
@@ -155,11 +173,6 @@ namespace MR
             {
                 _sequence.Kill();
             }
-
-            emptyCellRenderer.color = Color.white;
-            _sequence = DOTween.Sequence();
-            _sequence.Append(emptyCellRenderer.DOColor(_BlinkColor, ShakeDuration / 2f));
-            _sequence.Append(emptyCellRenderer.DOColor(Color.white, ShakeDuration / 2f));
 
             _shakeCoroutine = StartCoroutine(shake());
         }

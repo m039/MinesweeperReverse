@@ -150,7 +150,7 @@ namespace MR
 
                             YandexGamesManager.Instance.SetLeaderboardScore(
                                 _sceneData.IsEasyLevel ? "leaderboardeasy" : "leaderboardhard",
-                                _mainControls.GameTimer.Seconds
+                                _mainControls.GameTimer.Seconds * 1000
                                 );
                         });
                     }
@@ -168,7 +168,14 @@ namespace MR
                         _mineField.IsHoverEnabled = false;
                     }
 
-                    mineCell.ShakeAndBlink();
+                    mineCell.Shake();
+                    mineCell.Blink();
+
+                    foreach (var bomb in _mineField.GetNearbyBombs(mineCell))
+                    {
+                        bomb.Blink();
+                    }
+
                     healthCounter.RemoveHeart(0.6f, () => {
                         if (healthCounter.HeartCount <= 0)
                         {
