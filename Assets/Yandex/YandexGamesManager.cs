@@ -23,13 +23,13 @@ namespace MR
             }
         }
 
-        public System.Action<string> onDownloadGameData;
+        public System.Action<string> onGetData;
 
-        public System.Action onRewardedVideoRewarded;
+        public System.Action onShowRewardedVideoRewarded;
 
-        public System.Action<bool> onRewardedVideoClosed;
+        public System.Action<bool> onShowRewardedVideoClosed;
 
-        public System.Action<bool> onFullscreenAdvClosed;
+        public System.Action<bool> onShowFullscreenAdvClosed;
 
         private void Awake()
         {
@@ -47,42 +47,42 @@ namespace MR
 
 #if !UNITY_EDITOR && UNITY_WEBGL
         [DllImport("__Internal")]
-        private static extern void ShowFullscreenAdvInternal();
+        private static extern void YG_showFullscreenAdv();
 
         [DllImport("__Internal")]
-        private static extern void ShowRewardedVideoInternal();
+        private static extern void YG_showRewardedVideo();
 
         [DllImport("__Internal")]
-        private static extern void UploadGameDataInternal(string data);
+        private static extern void YG_setData(string data);
 
         [DllImport("__Internal")]
-        private static extern void SetLeaderboardScoreInternal(string leaderboard, int number);
+        private static extern void YG_setLeaderboardScore(string leaderboard, int number);
 
         [DllImport("__Internal")]
-        private static extern void DownloadGameDataInternal();
+        private static extern void YG_getData();
 
         [DllImport("__Internal")]
-        private static extern string GetLangInternal();
+        private static extern string YG_getLang();
 #endif
 
         public void ShowFullscreenAdv()
         {
 #if !UNITY_EDITOR && UNITY_WEBGL
-            ShowFullscreenAdvInternal();
+            YG_showFullscreenAdv();
 #endif
         }
 
         public void ShowRewardedVideo()
         {
 #if !UNITY_EDITOR && UNITY_WEBGL
-            ShowRewardedVideoInternal();
+            YG_showRewardedVideo();
 #endif
         }
 
-        public string GetLangCode()
+        public string GetLang()
         {
 #if !UNITY_EDITOR && UNITY_WEBGL
-            return GetLangInternal();
+            return YG_getLang();
 #else
             return null;
 #endif
@@ -91,42 +91,42 @@ namespace MR
         public void SetLeaderboardScore(string leaderboard, int number)
         {
 #if !UNITY_EDITOR && UNITY_WEBGL
-            SetLeaderboardScoreInternal(leaderboard, number);
+            YG_setLeaderboardScore(leaderboard, number);
 #endif
         }
 
-        public void OnFullscreenAdvClosed(string wasShown)
+        public void OnShowFullscreenAdvClosed(string wasShown)
         {
-            onFullscreenAdvClosed?.Invoke(bool.Parse(wasShown));
+            onShowFullscreenAdvClosed?.Invoke(bool.Parse(wasShown));
         }
 
-        public void OnRewardedVideoClosed(string wasShown)
+        public void OnShowRewardedVideoClosed(string wasShown)
         {
-            onRewardedVideoClosed?.Invoke(bool.Parse(wasShown));
+            onShowRewardedVideoClosed?.Invoke(bool.Parse(wasShown));
         }
 
-        public void OnRewardedVideoRewarded()
+        public void OnShowRewardedVideoRewarded()
         {
-            onRewardedVideoRewarded?.Invoke();
+            onShowRewardedVideoRewarded?.Invoke();
         }
 
-        public void UploadGameData(string gameData)
+        public void SetData(string gameData)
         {
 #if !UNITY_EDITOR && UNITY_WEBGL
-            UploadGameDataInternal(gameData);
+            YG_setData(gameData);
 #endif
         }
 
-        public void DownloadGameData()
+        public void GetData()
         {
 #if !UNITY_EDITOR && UNITY_WEBGL
-            DownloadGameDataInternal();
+            YG_getData();
 #endif
         }
 
-        public void OnDownloadGameData(string gameData)
+        public void OnGetData(string gameData)
         {
-            onDownloadGameData?.Invoke(gameData);
+            onGetData?.Invoke(gameData);
         }
     }
 }

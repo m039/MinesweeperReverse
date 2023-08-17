@@ -20,12 +20,12 @@ namespace MR
             _mainMenuView.PreviousLanguageButton.onClick.AddListener(OnSelectPreviousLanguageClicked);
             _mainMenuView.PlayEasyButton.onClick.AddListener(OnPlayEasyClicked);
             _mainMenuView.PlayHardButton.onClick.AddListener(OnPlayHardClicked);
-            YandexGamesManager.Instance.onDownloadGameData += OnDownloadGameData;
+            YandexGamesManager.Instance.onGetData += OnDownloadGameData;
             BasicLocalization.OnLanguageChanged += OnLanguageChanged;
 
             UpdateBestTimes();
 
-            YandexGamesManager.Instance.DownloadGameData();
+            YandexGamesManager.Instance.GetData();
         }
 
         void IDisposable.Dispose()
@@ -34,7 +34,7 @@ namespace MR
             _mainMenuView.PreviousLanguageButton.onClick.RemoveListener(OnSelectPreviousLanguageClicked);
             _mainMenuView.PlayEasyButton.onClick.RemoveListener(OnPlayEasyClicked);
             _mainMenuView.PlayHardButton.onClick.RemoveListener(OnPlayHardClicked);
-            YandexGamesManager.Instance.onDownloadGameData -= OnDownloadGameData;
+            YandexGamesManager.Instance.onGetData -= OnDownloadGameData;
             BasicLocalization.OnLanguageChanged -= OnLanguageChanged;
         }
 

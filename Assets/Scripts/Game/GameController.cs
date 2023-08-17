@@ -142,7 +142,7 @@ namespace MR
 
                             YandexMetrikaManager.Instance.ReachGoal("game_completed_" + (_sceneData.IsEasyLevel ? "easy" : "hard"));
 
-                            YandexGamesManager.Instance.UploadGameData(JsonUtility.ToJson(new YandexGamesData
+                            YandexGamesManager.Instance.SetData(JsonUtility.ToJson(new YandexGamesData
                             {
                                 bestTimeEasy = _progressService.GetBestTimeInSecondsEasy(),
                                 bestTimeHard = _progressService.GetBestTimeInSecondsHard()
@@ -233,10 +233,10 @@ namespace MR
                     _loseScreen.ContinueButton.gameObject.SetActive(false);
                 }
 
-                YandexGamesManager.Instance.onRewardedVideoClosed -= oneShot;
+                YandexGamesManager.Instance.onShowRewardedVideoClosed -= oneShot;
             };
 
-            YandexGamesManager.Instance.onRewardedVideoClosed += oneShot;
+            YandexGamesManager.Instance.onShowRewardedVideoClosed += oneShot;
             YandexGamesManager.Instance.ShowRewardedVideo();
         }
 

@@ -25,23 +25,23 @@ namespace MR
 
 #if UNITY_WEBGL && !UNITY_EDITOR
         [DllImport("__Internal")]
-        private static extern void YM_Hit(string str);
+        private static extern void YM_hit(string str);
 
         [DllImport("__Internal")]
-        private static extern void YM_ReachGoal(string target);
+        private static extern void YM_reachGoal(string target);
 #endif
 
         public void Hit(string url)
         {
 #if UNITY_WEBGL && !UNITY_EDITOR
-            YM_Hit(url);
+            YM_hit(url);
 #endif
         }
 
         public void ReachGoal(string target)
         {
 #if UNITY_WEBGL && !UNITY_EDITOR
-            YM_ReachGoal(target);
+            YM_reachGoal(target);
 #endif
         }
 

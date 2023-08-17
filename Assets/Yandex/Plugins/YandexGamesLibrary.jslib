@@ -1,5 +1,5 @@
 mergeInto(LibraryManager.library, {
-	GetLangInternal: function() {
+	YG_getLang: function() {
 		var lang = ysdk.environment.i18n.lang;
 		var bufferSize = lengthBytesUTF8(lang) + 1;
 		var buffer = _malloc(bufferSize);
@@ -7,11 +7,11 @@ mergeInto(LibraryManager.library, {
 		return buffer;
 	},
 	
-	ShowFullscreenAdvInternal: function() {
+	YG_showFullscreenAdv: function() {
 		ysdk.adv.showFullscreenAdv({
 			callbacks: {
 				onClose: function(wasShown) {
-				    myUnityInstance.SendMessage('YandexGamesManager', 'OnFullscreenAdvClosed', new Boolean(wasShown).toString());
+				    unityInstance.SendMessage('YandexGamesManager', 'OnShowFullscreenAdvClosed', new Boolean(wasShown).toString());
 				},
 				onError: function(error) {
 				}
@@ -19,7 +19,7 @@ mergeInto(LibraryManager.library, {
 		});
 	},
 
-    SetLeaderboardScoreInternal: function(leaderboard, number) {
+    YG_setLeaderboardScore: function(leaderboard, number) {
         var name = UTF8ToString(leaderboard);
 
         ysdk.getLeaderboards().then(lb => {
@@ -27,14 +27,14 @@ mergeInto(LibraryManager.library, {
         });
     },
 
-    ShowRewardedVideoInternal: function() {
+    YG_showRewardedVideo: function() {
 		ysdk.adv.showRewardedVideo({
 			callbacks: {
 				onClose: function(wasShown) {
-				    myUnityInstance.SendMessage('YandexGamesManager', 'OnRewardedVideoClosed', new Boolean(wasShown).toString());
+				    unityInstance.SendMessage('YandexGamesManager', 'OnShowRewardedVideoClosed', new Boolean(wasShown).toString());
 				},
                 onRewarded: function() {
-                    myUnityInstance.SendMessage('YandexGamesManager', 'OnRewardedVideoRewarded');
+                    unityInstance.SendMessage('YandexGamesManager', 'OnShowRewardedVideoRewarded');
                 },
 				onError: function(error) {
 				}
@@ -42,16 +42,16 @@ mergeInto(LibraryManager.library, {
 		});
 	},
 
-	UploadGameDataInternal: function(data) {
+	YG_setData: function(data) {
     	var dataString = UTF8ToString(data);
     	var myobj = JSON.parse(dataString);
     	player.setData(myobj);
   	},
 
-  	DownloadGameDataInternal: function() {
+  	YG_getData: function() {
     	player.getData().then(_data => {
         	const myJSON = JSON.stringify(_data);
-        	myUnityInstance.SendMessage('YandexGamesManager', 'OnDownloadGameData', myJSON);
+        	unityInstance.SendMessage('YandexGamesManager', 'OnGetData', myJSON);
     	});
  	},
   });
