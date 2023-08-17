@@ -233,10 +233,10 @@ namespace MR
                     _loseScreen.ContinueButton.gameObject.SetActive(false);
                 }
 
-                YandexGamesManager.Instance.onShowRewardedVideoClosed -= oneShot;
+                YandexGamesManager.Instance.onShowRewardedVideoClose -= oneShot;
             };
 
-            YandexGamesManager.Instance.onShowRewardedVideoClosed += oneShot;
+            YandexGamesManager.Instance.onShowRewardedVideoClose += oneShot;
             YandexGamesManager.Instance.ShowRewardedVideo();
         }
 

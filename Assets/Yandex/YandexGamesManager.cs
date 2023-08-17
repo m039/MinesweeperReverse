@@ -27,9 +27,9 @@ namespace MR
 
         public System.Action onShowRewardedVideoRewarded;
 
-        public System.Action<bool> onShowRewardedVideoClosed;
+        public System.Action<bool> onShowRewardedVideoClose;
 
-        public System.Action<bool> onShowFullscreenAdvClosed;
+        public System.Action<bool> onShowFullscreenAdvClose;
 
         private void Awake()
         {
@@ -95,14 +95,14 @@ namespace MR
 #endif
         }
 
-        void OnShowFullscreenAdvClosed(string wasShown)
+        void OnShowFullscreenAdvClose(string wasShown)
         {
-            onShowFullscreenAdvClosed?.Invoke(bool.Parse(wasShown));
+            onShowFullscreenAdvClose?.Invoke(bool.Parse(wasShown));
         }
 
-        void OnShowRewardedVideoClosed(string wasShown)
+        void OnShowRewardedVideoClose(string wasShown)
         {
-            onShowRewardedVideoClosed?.Invoke(bool.Parse(wasShown));
+            onShowRewardedVideoClose?.Invoke(bool.Parse(wasShown));
         }
 
         void OnShowRewardedVideoRewarded()

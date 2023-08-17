@@ -11,7 +11,7 @@ mergeInto(LibraryManager.library, {
         ysdk.adv.showFullscreenAdv({
             callbacks: {
                 onClose: function(wasShown) {
-                    unityInstance.SendMessage('YandexGamesManager', 'OnShowFullscreenAdvClosed', new Boolean(wasShown).toString());
+                    unityInstance.SendMessage('YandexGamesManager', 'OnShowFullscreenAdvClose', new Boolean(wasShown).toString());
                 },
                 onError: function(error) {
                 }
@@ -31,7 +31,7 @@ mergeInto(LibraryManager.library, {
         ysdk.adv.showRewardedVideo({
             callbacks: {
                 onClose: function(wasShown) {
-                    unityInstance.SendMessage('YandexGamesManager', 'OnShowRewardedVideoClosed', new Boolean(wasShown).toString());
+                    unityInstance.SendMessage('YandexGamesManager', 'OnShowRewardedVideoClose', new Boolean(wasShown).toString());
                 },
                 onRewarded: function() {
                     unityInstance.SendMessage('YandexGamesManager', 'OnShowRewardedVideoRewarded');
