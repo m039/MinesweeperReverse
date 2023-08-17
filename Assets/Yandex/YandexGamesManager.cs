@@ -23,13 +23,13 @@ namespace MR
             }
         }
 
-        public System.Action<string> onGetData;
+        public event System.Action<string> onGetData;
 
-        public System.Action onShowRewardedVideoRewarded;
+        public event System.Action onShowRewardedVideoRewarded;
 
-        public System.Action<bool> onShowRewardedVideoClose;
+        public event System.Action<bool> onShowRewardedVideoClose;
 
-        public System.Action<bool> onShowFullscreenAdvClose;
+        public event System.Action<bool> onShowFullscreenAdvClose;
 
         private void Awake()
         {
