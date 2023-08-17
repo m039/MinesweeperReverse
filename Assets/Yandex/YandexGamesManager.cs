@@ -8,20 +8,15 @@ namespace MR
 {
     public class YandexGamesManager : MonoBehaviour
     {
-        [System.Serializable]
-        public class YandexGameData
-        {
-            public int bestTimeEasy = -1;
-            public int bestTimeHard = -1;
-        }
-
         static public YandexGamesManager Instance;
 
-        public System.Action<YandexGameData> onDownloadGameData;
+        public System.Action<string> onDownloadGameData;
 
         public System.Action onRewardedVideoRewarded;
 
         public System.Action<bool> onRewardedVideoClosed;
+
+        public System.Action<bool> onFullscreenAdvClosed;
 
         private void Awake()
         {
@@ -80,9 +75,8 @@ namespace MR
 #endif
         }
 
-        public void SetLeaderboardScore(string leaderboard, int seconds)
+        public void SetLeaderboardScore(string leaderboard, int number)
         {
-            var number = seconds * 1000;
 #if !UNITY_EDITOR && UNITY_WEBGL
             SetLeaderboardScoreInternal(leaderboard, number);
 #endif
@@ -90,6 +84,7 @@ namespace MR
 
         public void OnFullscreenAdvClosed(string wasShown)
         {
+            onFullscreenAdvClosed?.Invoke(bool.Parse(wasShown));
         }
 
         public void OnRewardedVideoClosed(string wasShown)
@@ -102,14 +97,10 @@ namespace MR
             onRewardedVideoRewarded?.Invoke();
         }
 
-        public void UploadGameData(YandexGameData gameData)
+        public void UploadGameData(string gameData)
         {
-            if (gameData == null)
-                return;
-
 #if !UNITY_EDITOR && UNITY_WEBGL
-            var json = JsonUtility.ToJson(gameData);
-            UploadGameDataInternal(json);
+            UploadGameDataInternal(gameData);
 #endif
         }
 
@@ -120,9 +111,9 @@ namespace MR
 #endif
         }
 
-        public void OnDownloadGameData(string json)
+        public void OnDownloadGameData(string gameData)
         {
-            onDownloadGameData?.Invoke(JsonUtility.FromJson<YandexGameData>(json));
+            onDownloadGameData?.Invoke(gameData);
         }
     }
 }

@@ -142,11 +142,11 @@ namespace MR
 
                             YandexMetrikaManager.Instance.ReachGoal("game_completed_" + (_sceneData.IsEasyLevel ? "easy" : "hard"));
 
-                            YandexGamesManager.Instance.UploadGameData(new YandexGamesManager.YandexGameData
+                            YandexGamesManager.Instance.UploadGameData(JsonUtility.ToJson(new YandexGamesData
                             {
                                 bestTimeEasy = _progressService.GetBestTimeInSecondsEasy(),
                                 bestTimeHard = _progressService.GetBestTimeInSecondsHard()
-                            });
+                            }));
 
                             YandexGamesManager.Instance.SetLeaderboardScore(
                                 _sceneData.IsEasyLevel ? "leaderboardeasy" : "leaderboardhard",

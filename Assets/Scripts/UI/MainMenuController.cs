@@ -1,4 +1,5 @@
 using m039.BasicLocalization;
+using SimpleJSON;
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -62,10 +63,12 @@ namespace MR
             UpdateBestTimes();
         }
 
-        void OnDownloadGameData(YandexGamesManager.YandexGameData gameData)
+        void OnDownloadGameData(string str)
         {
-            if (gameData == null)
+            if (string.IsNullOrEmpty(str))
                 return;
+
+            var gameData = JsonUtility.FromJson<YandexGamesData>(str);
 
             if (gameData.bestTimeEasy > 0)
             {
