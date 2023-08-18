@@ -42,16 +42,16 @@ mergeInto(LibraryManager.library, {
         });
     },
 
-    YG_setData: function(data) {
+    YG_setPlayerData: function(data) {
         var dataString = UTF8ToString(data);
         var myobj = JSON.parse(dataString);
         player.setData(myobj);
     },
 
-    YG_getData: function() {
+    YG_getPlayerData: function() {
         player.getData().then(_data => {
             const myJSON = JSON.stringify(_data);
-            unityInstance.SendMessage('YandexGamesManager', 'OnGetData', myJSON);
+            unityInstance.SendMessage('YandexGamesManager', 'OnGetPlayerData', myJSON);
         });
     },
   });

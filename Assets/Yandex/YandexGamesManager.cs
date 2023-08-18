@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 #endif
 
 using UnityEngine;
+using UnityEngine.Scripting;
 
 namespace MR
 {
@@ -23,7 +24,7 @@ namespace MR
             }
         }
 
-        public event System.Action<string> onGetData;
+        public event System.Action<string> onGetPlayerData;
 
         public event System.Action onShowRewardedVideoRewarded;
 
@@ -53,13 +54,13 @@ namespace MR
         private static extern void YG_showRewardedVideo();
 
         [DllImport("__Internal")]
-        private static extern void YG_setData(string data);
+        private static extern void YG_getPlayerData();
+
+        [DllImport("__Internal")]
+        private static extern void YG_setPlayerData(string data);
 
         [DllImport("__Internal")]
         private static extern void YG_setLeaderboardScore(string leaderboard, int number);
-
-        [DllImport("__Internal")]
-        private static extern void YG_getData();
 
         [DllImport("__Internal")]
         private static extern string YG_getLang();
@@ -95,38 +96,42 @@ namespace MR
 #endif
         }
 
+        [Preserve]
         void OnShowFullscreenAdvClose(string wasShown)
         {
             onShowFullscreenAdvClose?.Invoke(bool.Parse(wasShown));
         }
 
+        [Preserve]
         void OnShowRewardedVideoClose(string wasShown)
         {
             onShowRewardedVideoClose?.Invoke(bool.Parse(wasShown));
         }
 
+        [Preserve]
         void OnShowRewardedVideoRewarded()
         {
             onShowRewardedVideoRewarded?.Invoke();
         }
 
-        public void SetData(string gameData)
+        public void SetPlayerData(string gameData)
         {
 #if !UNITY_EDITOR && UNITY_WEBGL
-            YG_setData(gameData);
+            YG_setPlayerData(gameData);
 #endif
         }
 
-        public void GetData()
+        public void GetPlayerData()
         {
 #if !UNITY_EDITOR && UNITY_WEBGL
-            YG_getData();
+            YG_getPlayerData();
 #endif
         }
 
-        void OnGetData(string gameData)
+        [Preserve]
+        void OnGetPlayerData(string gameData)
         {
-            onGetData?.Invoke(gameData);
+            onGetPlayerData?.Invoke(gameData);
         }
     }
 }
