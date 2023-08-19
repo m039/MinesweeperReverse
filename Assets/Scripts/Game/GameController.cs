@@ -224,6 +224,7 @@ namespace MR
                 _loseScreen.Hide();
                 _mainControls.HealthCounter.AddHeart(0.6f, null);
                 YandexGamesManager.Instance.onShowRewardedVideoClose -= oneShot;
+                _mainControls.GameTimer.StartTimer();
             };
 
             YandexGamesManager.Instance.onShowRewardedVideoClose += oneShot;
