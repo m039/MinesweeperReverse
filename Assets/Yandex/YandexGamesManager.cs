@@ -70,6 +70,8 @@ namespace MR
         {
 #if !UNITY_EDITOR && UNITY_WEBGL
             YG_showFullscreenAdv();
+#else
+            onShowFullscreenAdvClose?.Invoke(false);
 #endif
         }
 
@@ -77,6 +79,8 @@ namespace MR
         {
 #if !UNITY_EDITOR && UNITY_WEBGL
             YG_showRewardedVideo();
+#else
+            onShowRewardedVideoClose?.Invoke(false);
 #endif
         }
 

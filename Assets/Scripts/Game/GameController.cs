@@ -36,15 +36,12 @@ namespace MR
 
         BaseScreen[] _screens;
 
-        int _numberOfTries;
-
         bool _isNumberSelected = false;
 
         System.Action _onShowHelpAtFirstStart;
 
         void IStartable.Start()
         {
-            _numberOfTries = _sceneData.NumberOfTries;
             _mineField.ConstructField();
             _mineField.IsHoverEnabled = false;
             _mineField.onPlaceNumber += OnPlaceNumer;
@@ -226,13 +223,6 @@ namespace MR
             {
                 _loseScreen.Hide();
                 _mainControls.HealthCounter.AddHeart(0.6f, null);
-                _numberOfTries--;
-
-                if (_numberOfTries == 0)
-                {
-                    _loseScreen.ContinueButton.gameObject.SetActive(false);
-                }
-
                 YandexGamesManager.Instance.onShowRewardedVideoClose -= oneShot;
             };
 
