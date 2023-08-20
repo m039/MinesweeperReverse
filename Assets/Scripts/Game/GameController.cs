@@ -146,7 +146,7 @@ namespace MR
                             }));
 
                             YandexGamesManager.Instance.SetLeaderboardScore(
-                                _sceneData.IsEasyLevel ? "leaderboardeasy" : "leaderboardhard",
+                                _sceneData.IsEasyLevel ? "leaderboardeasy2" : "leaderboardhard2",
                                 _mainControls.GameTimer.Seconds * 1000
                                 );
                         });
