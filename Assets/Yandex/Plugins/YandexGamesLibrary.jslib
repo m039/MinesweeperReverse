@@ -27,6 +27,19 @@ mergeInto(LibraryManager.library, {
         });
     },
 
+    YG_getLeaderboardPlayerEntry: function(leaderboard) {
+        var name = UTF8ToString(leaderboard);
+
+        ysdk.getLeaderboards()
+            .then(lb => lb.getLeaderboardPlayerEntry(name))
+            .then(res => {
+                unityInstance.SendMessage('YandexGamesManager', 'OnGetLeaderboardPlayerEntry', JSON.stringify(res));
+            })
+            .catch(err => {
+                unityInstance.SendMessage('YandexGamesManager', 'OnGetLeaderboardPlayerEntryError', JSON.stringify(err));
+            });
+    },
+
     YG_showRewardedVideo: function() {
         ysdk.adv.showRewardedVideo({
             callbacks: {

@@ -40,6 +40,8 @@ namespace MR
 
         System.Action _onShowHelpAtFirstStart;
 
+        System.Action<int> _setLeaderboardCallback;
+
         void IStartable.Start()
         {
             _mineField.ConstructField();
@@ -87,6 +89,9 @@ namespace MR
 
             YandexMetrikaManager.Instance.ReachGoal("start_game_" + (_sceneData.IsEasyLevel ? "easy" : "hard"));
             YandexGamesManager.Instance.ShowFullscreenAdv();
+
+            YandexGamesManager.Instance.onGetLeaderboardPlayerEntry += OnGetLeaderboardPlayerEntry;
+            YandexGamesManager.Instance.onGetLeaderboardPlayerEntryError += OnGetLeaderboardPlayerEntryError;
         }
 
         void System.IDisposable.Dispose()
@@ -105,6 +110,10 @@ namespace MR
             }
 
             _loseScreen.ContinueButton.onClick.RemoveListener(OnContinueClicked);
+
+
+            YandexGamesManager.Instance.onGetLeaderboardPlayerEntry -= OnGetLeaderboardPlayerEntry;
+            YandexGamesManager.Instance.onGetLeaderboardPlayerEntryError -= OnGetLeaderboardPlayerEntryError;
         }
 
         void OnPlaceNumer(MineCell mineCell)
@@ -145,10 +154,18 @@ namespace MR
                                 bestTimeHard = _progressService.GetBestTimeInSecondsHard()
                             }));
 
-                            YandexGamesManager.Instance.SetLeaderboardScore(
-                                _sceneData.IsEasyLevel ? "leaderboardeasy2" : "leaderboardhard2",
-                                _mainControls.GameTimer.Seconds * 1000
-                                );
+                            var leaderboard = _sceneData.IsEasyLevel ? "leaderboardeasy" : "leaderboardhard";
+                            var newScore = _mainControls.GameTimer.Seconds * 1000;
+
+                            _setLeaderboardCallback = (oldScore) =>
+                            {
+                                if (oldScore <= 0 || oldScore > newScore)
+                                {
+                                    YandexGamesManager.Instance.SetLeaderboardScore(leaderboard, newScore);
+                                }
+                            };
+
+                            YandexGamesManager.Instance.GetLeaderboardPlayerEntry(leaderboard);
                         });
                     }
                 }
@@ -229,6 +246,21 @@ namespace MR
 
             YandexGamesManager.Instance.onShowRewardedVideoClose += oneShot;
             YandexGamesManager.Instance.ShowRewardedVideo();
+        }
+
+        void OnGetLeaderboardPlayerEntry(YandexGamesManager.LeaderboardPlayerEntryResponse response)
+        {
+            _setLeaderboardCallback?.Invoke(response.score);
+            _setLeaderboardCallback = null;
+        }
+
+        void OnGetLeaderboardPlayerEntryError(YandexGamesManager.ErrorResponse response)
+        {
+            if (response.code == YandexGamesManager.CODE_LEADERBOARD_PLAYER_NOT_PRESENT)
+            {
+                _setLeaderboardCallback?.Invoke(-1);
+                _setLeaderboardCallback = null;
+            }
         }
 
         const int NextNumbersCount = 4;

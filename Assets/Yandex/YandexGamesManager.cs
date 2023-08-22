@@ -24,6 +24,25 @@ namespace MR
             }
         }
 
+        public const string CODE_LEADERBOARD_PLAYER_NOT_PRESENT = "LEADERBOARD_PLAYER_NOT_PRESENT";
+
+        [System.Serializable]
+        public class LeaderboardPlayerEntryResponse
+        {
+            public int score;
+            public string extraData;
+        }
+
+        [System.Serializable]
+        public class ErrorResponse
+        {
+            public string code;
+            public int httpStatus;
+            public string message;
+            public string name;
+            public string stack;
+        }
+
         public event System.Action<string> onGetPlayerData;
 
         public event System.Action onShowRewardedVideoRewarded;
@@ -31,6 +50,10 @@ namespace MR
         public event System.Action<bool> onShowRewardedVideoClose;
 
         public event System.Action<bool> onShowFullscreenAdvClose;
+
+        public event System.Action<LeaderboardPlayerEntryResponse> onGetLeaderboardPlayerEntry;
+
+        public event System.Action<ErrorResponse> onGetLeaderboardPlayerEntryError;
 
         private void Awake()
         {
@@ -61,6 +84,9 @@ namespace MR
 
         [DllImport("__Internal")]
         private static extern void YG_setLeaderboardScore(string leaderboard, int number);
+
+        [DllImport("__Internal")]
+        private static extern void YG_getLeaderboardPlayerEntry(string leaderboard);
 
         [DllImport("__Internal")]
         private static extern string YG_getLang();
@@ -100,6 +126,13 @@ namespace MR
 #endif
         }
 
+        public void GetLeaderboardPlayerEntry(string leaderboard)
+        {
+#if !UNITY_EDITOR && UNITY_WEBGL
+            YG_getLeaderboardPlayerEntry(leaderboard);
+#endif
+        }
+
         [Preserve]
         void OnShowFullscreenAdvClose(string wasShown)
         {
@@ -116,6 +149,18 @@ namespace MR
         void OnShowRewardedVideoRewarded()
         {
             onShowRewardedVideoRewarded?.Invoke();
+        }
+
+        [Preserve]
+        void OnGetLeaderboardPlayerEntry(string response)
+        {
+            onGetLeaderboardPlayerEntry?.Invoke(JsonUtility.FromJson<LeaderboardPlayerEntryResponse>(response));
+        }
+
+        [Preserve]
+        void OnGetLeaderboardPlayerEntryError(string response)
+        {
+            onGetLeaderboardPlayerEntryError?.Invoke(JsonUtility.FromJson<ErrorResponse>(response));
         }
 
         public void SetPlayerData(string gameData)

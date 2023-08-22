@@ -26,7 +26,7 @@ MonoBehaviour:
   - key: GameName
     phrases:
     - language: {fileID: 969846672807714857}
-      text: "\u0421\u0430\u043F\u0435\u0440 \u043D\u0430\u043E\u0431\u043E\u0440\u043E\u0442"
+      text: "\u0421\u0430\u043F\u0451\u0440 \u043D\u0430\u043E\u0431\u043E\u0440\u043E\u0442"
     - language: {fileID: 1991677564306353750}
       text: Minesweeper Reverse
     guid: f0a1cbd1-f1fe-46c0-b813-b44de45b801b
@@ -132,7 +132,7 @@ MonoBehaviour:
     - language: {fileID: 1991677564306353750}
       text: You Win!
     guid: e77f9149-38cc-4db3-9db4-c558141f0692
-  mainAsset: 0
+  mainAsset: 1
   editorData:
     translateOnlyEmptyFields: 1
   references:
