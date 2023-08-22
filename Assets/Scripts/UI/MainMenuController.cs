@@ -10,6 +10,8 @@ namespace MR
 {
     public class MainMenuController : IStartable, IDisposable
     {
+        static bool s_IsGameReady;
+
         [Inject] MainMenuView _mainMenuView;
 
         [Inject] ProgressService _progresService;
@@ -26,6 +28,12 @@ namespace MR
             UpdateBestTimes();
 
             YandexGamesManager.Instance.GetPlayerData();
+
+            if (!s_IsGameReady)
+            {
+                YandexGamesManager.Instance.GameReady();
+                s_IsGameReady = true;
+            }
         }
 
         void IDisposable.Dispose()

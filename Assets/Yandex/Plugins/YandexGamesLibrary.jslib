@@ -67,4 +67,10 @@ mergeInto(LibraryManager.library, {
             unityInstance.SendMessage('YandexGamesManager', 'OnGetPlayerData', myJSON);
         });
     },
-  });
+
+    YG_gameReady: function() {
+        if (ysdk.features.LoadingAPI) {
+            ysdk.features.LoadingAPI.ready();
+        }
+    },
+});

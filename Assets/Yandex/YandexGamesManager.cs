@@ -90,6 +90,9 @@ namespace MR
 
         [DllImport("__Internal")]
         private static extern string YG_getLang();
+
+        [DllImport("__Internal")]
+        private static extern void YG_gameReady();
 #endif
 
         public void ShowFullscreenAdv()
@@ -181,6 +184,13 @@ namespace MR
         void OnGetPlayerData(string gameData)
         {
             onGetPlayerData?.Invoke(gameData);
+        }
+
+        public void GameReady()
+        {
+#if !UNITY_EDITOR && UNITY_WEBGL
+            YG_gameReady();
+#endif
         }
     }
 }
