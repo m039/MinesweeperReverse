@@ -32,6 +32,10 @@ namespace MR
 
         [Inject] AudioController _audioController;
 
+        [Inject] YandexGamesManager _yandexGames;
+
+        [Inject] YandexMetrikaManager _yandexMetrika;
+
         List<int> _nextNumbers;
 
         BaseScreen[] _screens;
@@ -87,11 +91,11 @@ namespace MR
                 _mainControls.GameTimer.StartTimer();
             }
 
-            YandexMetrikaManager.Instance.ReachGoal("start_game_" + (_sceneData.IsEasyLevel ? "easy" : "hard"));
-            YandexGamesManager.Instance.ShowFullscreenAdv();
+            _yandexMetrika.ReachGoal("start_game_" + (_sceneData.IsEasyLevel ? "easy" : "hard"));
+            _yandexGames.ShowFullscreenAdv();
 
-            YandexGamesManager.Instance.onGetLeaderboardPlayerEntry += OnGetLeaderboardPlayerEntry;
-            YandexGamesManager.Instance.onGetLeaderboardPlayerEntryError += OnGetLeaderboardPlayerEntryError;
+            _yandexGames.onGetLeaderboardPlayerEntry += OnGetLeaderboardPlayerEntry;
+            _yandexGames.onGetLeaderboardPlayerEntryError += OnGetLeaderboardPlayerEntryError;
         }
 
         void System.IDisposable.Dispose()
@@ -112,8 +116,8 @@ namespace MR
             _loseScreen.ContinueButton.onClick.RemoveListener(OnContinueClicked);
 
 
-            YandexGamesManager.Instance.onGetLeaderboardPlayerEntry -= OnGetLeaderboardPlayerEntry;
-            YandexGamesManager.Instance.onGetLeaderboardPlayerEntryError -= OnGetLeaderboardPlayerEntryError;
+            _yandexGames.onGetLeaderboardPlayerEntry -= OnGetLeaderboardPlayerEntry;
+            _yandexGames.onGetLeaderboardPlayerEntryError -= OnGetLeaderboardPlayerEntryError;
         }
 
         void OnPlaceNumer(MineCell mineCell)
@@ -146,9 +150,9 @@ namespace MR
                             _winScreen.GameTimer.Seconds = _mainControls.GameTimer.Seconds;
                             _winScreen.Show();
 
-                            YandexMetrikaManager.Instance.ReachGoal("game_completed_" + (_sceneData.IsEasyLevel ? "easy" : "hard"));
+                            _yandexMetrika.ReachGoal("game_completed_" + (_sceneData.IsEasyLevel ? "easy" : "hard"));
 
-                            YandexGamesManager.Instance.SetPlayerData(JsonUtility.ToJson(new YandexGamesData
+                            _yandexGames.SetPlayerData(JsonUtility.ToJson(new YandexGamesData
                             {
                                 bestTimeEasy = _progressService.GetBestTimeInSecondsEasy(),
                                 bestTimeHard = _progressService.GetBestTimeInSecondsHard()
@@ -161,11 +165,11 @@ namespace MR
                             {
                                 if (oldScore <= 0 || oldScore > newScore)
                                 {
-                                    YandexGamesManager.Instance.SetLeaderboardScore(leaderboard, newScore);
+                                    _yandexGames.SetLeaderboardScore(leaderboard, newScore);
                                 }
                             };
 
-                            YandexGamesManager.Instance.GetLeaderboardPlayerEntry(leaderboard);
+                            _yandexGames.GetLeaderboardPlayerEntry(leaderboard);
                         });
                     }
                 }
@@ -240,12 +244,12 @@ namespace MR
             {
                 _loseScreen.Hide();
                 _mainControls.HealthCounter.AddHeart(0.6f, null);
-                YandexGamesManager.Instance.onShowRewardedVideoClose -= oneShot;
+                _yandexGames.onShowRewardedVideoClose -= oneShot;
                 _mainControls.GameTimer.StartTimer();
             };
 
-            YandexGamesManager.Instance.onShowRewardedVideoClose += oneShot;
-            YandexGamesManager.Instance.ShowRewardedVideo();
+            _yandexGames.onShowRewardedVideoClose += oneShot;
+            _yandexGames.ShowRewardedVideo();
         }
 
         void OnGetLeaderboardPlayerEntry(YandexGamesManager.LeaderboardPlayerEntryResponse response)

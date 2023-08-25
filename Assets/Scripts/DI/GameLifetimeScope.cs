@@ -31,6 +31,8 @@ namespace MR
             builder.RegisterComponentInHierarchy<HealthCounter>();
             builder.RegisterComponentInHierarchy<ConfettiController>();
             builder.RegisterComponentInHierarchy<SceneData>();
+            builder.RegisterInstance(YandexGamesManager.Instance);
+            builder.RegisterInstance(YandexMetrikaManager.Instance);
         }
     }
 }

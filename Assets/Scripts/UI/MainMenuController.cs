@@ -16,22 +16,24 @@ namespace MR
 
         [Inject] ProgressService _progresService;
 
+        [Inject] YandexGamesManager _yandexGames;
+
         void IStartable.Start()
         {
             _mainMenuView.NextLanguageButton.onClick.AddListener(OnSelectNextLanguageClicked);
             _mainMenuView.PreviousLanguageButton.onClick.AddListener(OnSelectPreviousLanguageClicked);
             _mainMenuView.PlayEasyButton.onClick.AddListener(OnPlayEasyClicked);
             _mainMenuView.PlayHardButton.onClick.AddListener(OnPlayHardClicked);
-            YandexGamesManager.Instance.onGetPlayerData += OnDownloadGameData;
+            _yandexGames.onGetPlayerData += OnDownloadGameData;
             BasicLocalization.OnLanguageChanged += OnLanguageChanged;
 
             UpdateBestTimes();
 
-            YandexGamesManager.Instance.GetPlayerData();
+            _yandexGames.GetPlayerData();
 
             if (!s_IsGameReady)
             {
-                YandexGamesManager.Instance.GameReady();
+                _yandexGames.GameReady();
                 s_IsGameReady = true;
             }
         }
@@ -42,7 +44,7 @@ namespace MR
             _mainMenuView.PreviousLanguageButton.onClick.RemoveListener(OnSelectPreviousLanguageClicked);
             _mainMenuView.PlayEasyButton.onClick.RemoveListener(OnPlayEasyClicked);
             _mainMenuView.PlayHardButton.onClick.RemoveListener(OnPlayHardClicked);
-            YandexGamesManager.Instance.onGetPlayerData -= OnDownloadGameData;
+            _yandexGames.onGetPlayerData -= OnDownloadGameData;
             BasicLocalization.OnLanguageChanged -= OnLanguageChanged;
         }
 

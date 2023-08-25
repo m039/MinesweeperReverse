@@ -10,6 +10,8 @@ namespace MR
             builder.RegisterEntryPoint<MainMenuController>();
             builder.Register<ProgressService>(Lifetime.Singleton);
             builder.RegisterComponentInHierarchy<MainMenuView>();
+            builder.RegisterInstance(YandexGamesManager.Instance);
+            builder.RegisterInstance(YandexMetrikaManager.Instance);
         }
     }
 }
