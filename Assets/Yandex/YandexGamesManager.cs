@@ -93,6 +93,9 @@ namespace MR
 
         [DllImport("__Internal")]
         private static extern void YG_gameReady();
+
+        [DllImport("__Internal")]
+        private static extern bool YG_isInitialized();
 #endif
 
         public void ShowFullscreenAdv()
@@ -190,6 +193,15 @@ namespace MR
         {
 #if !UNITY_EDITOR && UNITY_WEBGL
             YG_gameReady();
+#endif
+        }
+
+        public bool IsInitialized()
+        {
+#if !UNITY_EDITOR && UNITY_WEBGL
+            return YG_isInitialized();
+#else
+            return true;
 #endif
         }
     }

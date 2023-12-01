@@ -73,4 +73,8 @@ mergeInto(LibraryManager.library, {
             ysdk.features.LoadingAPI.ready();
         }
     },
+
+    YG_isInitialized: function() {
+        return typeof ysdk != "undefined" && typeof player != "undefined";
+    }
 });
