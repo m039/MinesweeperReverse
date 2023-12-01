@@ -55,7 +55,7 @@ namespace MR
             }
             else
             {
-                Destroy(this);
+                Destroy(gameObject);
             }
         }
     }
