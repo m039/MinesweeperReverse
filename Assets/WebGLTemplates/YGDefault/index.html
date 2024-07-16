@@ -156,16 +156,23 @@
     </script>
 
     <script>
-      YaGames
-        .init()
-        .then(ysdk => {
-          console.log('Yandex SDK initialized');
-          window.ysdk = ysdk;
+      const url = new URL(window.location.href);
+      const yandexUrl = ['y', 'a', 'n', 'd', 'e', 'x', '.', 'n', 'e', 't'].join('');
+      
+      if (url.hostname.includes(yandexUrl) || url.hash.includes('yandex')) {
+        YaGames
+          .init()
+          .then(ysdk => {
+            console.log('Yandex SDK initialized');
+            window.ysdk = ysdk;
 
-          initPlayer();
+            initPlayer();
 
-          createUnityScript();
-        });
+            createUnityScript();
+          });
+      } else {
+        createUnityScript();
+      }
 
       var player;
 
