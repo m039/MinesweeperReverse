@@ -1,4 +1,8 @@
 mergeInto(LibraryManager.library, {
+    YG_isSupported: function() {
+		return typeof ysdk != "undefined";
+	},
+
     YG_getLang: function() {
         var lang = ysdk.environment.i18n.lang;
         var bufferSize = lengthBytesUTF8(lang) + 1;

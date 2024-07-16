@@ -71,6 +71,9 @@ namespace MR
 
 #if !UNITY_EDITOR && UNITY_WEBGL
         [DllImport("__Internal")]
+        private static extern bool YG_isSupported();
+
+        [DllImport("__Internal")]
         private static extern void YG_showFullscreenAdv();
 
         [DllImport("__Internal")]
@@ -101,6 +104,12 @@ namespace MR
         public void ShowFullscreenAdv()
         {
 #if !UNITY_EDITOR && UNITY_WEBGL
+            if (!YG_isSupported()) {
+                return;
+            }
+#endif
+
+#if !UNITY_EDITOR && UNITY_WEBGL
             YG_showFullscreenAdv();
 #else
             onShowFullscreenAdvClose?.Invoke(false);
@@ -109,6 +118,12 @@ namespace MR
 
         public void ShowRewardedVideo()
         {
+#if !UNITY_EDITOR && UNITY_WEBGL
+            if (!YG_isSupported()) {
+                return;
+            }
+#endif
+
 #if !UNITY_EDITOR && UNITY_WEBGL
             YG_showRewardedVideo();
 #else
@@ -119,6 +134,12 @@ namespace MR
         public string GetLang()
         {
 #if !UNITY_EDITOR && UNITY_WEBGL
+            if (!YG_isSupported()) {
+                return null;
+            }
+#endif
+
+#if !UNITY_EDITOR && UNITY_WEBGL
             return YG_getLang();
 #else
             return null;
@@ -128,12 +149,24 @@ namespace MR
         public void SetLeaderboardScore(string leaderboard, int number)
         {
 #if !UNITY_EDITOR && UNITY_WEBGL
+            if (!YG_isSupported()) {
+                return;
+            }
+#endif
+
+#if !UNITY_EDITOR && UNITY_WEBGL
             YG_setLeaderboardScore(leaderboard, number);
 #endif
         }
 
         public void GetLeaderboardPlayerEntry(string leaderboard)
         {
+#if !UNITY_EDITOR && UNITY_WEBGL
+            if (!YG_isSupported()) {
+                return;
+            }
+#endif
+
 #if !UNITY_EDITOR && UNITY_WEBGL
             YG_getLeaderboardPlayerEntry(leaderboard);
 #endif
@@ -172,12 +205,24 @@ namespace MR
         public void SetPlayerData(string gameData)
         {
 #if !UNITY_EDITOR && UNITY_WEBGL
+            if (!YG_isSupported()) {
+                return;
+            }
+#endif
+
+#if !UNITY_EDITOR && UNITY_WEBGL
             YG_setPlayerData(gameData);
 #endif
         }
 
         public void GetPlayerData()
         {
+#if !UNITY_EDITOR && UNITY_WEBGL
+            if (!YG_isSupported()) {
+                return;
+            }
+#endif
+
 #if !UNITY_EDITOR && UNITY_WEBGL
             YG_getPlayerData();
 #endif
@@ -192,12 +237,24 @@ namespace MR
         public void GameReady()
         {
 #if !UNITY_EDITOR && UNITY_WEBGL
+            if (!YG_isSupported()) {
+                return;
+            }
+#endif
+
+#if !UNITY_EDITOR && UNITY_WEBGL
             YG_gameReady();
 #endif
         }
 
         public bool IsInitialized()
         {
+#if !UNITY_EDITOR && UNITY_WEBGL
+            if (!YG_isSupported()) {
+                return true;
+            }
+#endif
+
 #if !UNITY_EDITOR && UNITY_WEBGL
             return YG_isInitialized();
 #else

@@ -25,6 +25,9 @@ namespace MR
 
 #if UNITY_WEBGL && !UNITY_EDITOR
         [DllImport("__Internal")]
+        private static extern bool YM_isSupported();
+
+        [DllImport("__Internal")]
         private static extern void YM_hit(string str);
 
         [DllImport("__Internal")]
@@ -34,12 +37,24 @@ namespace MR
         public void Hit(string url)
         {
 #if UNITY_WEBGL && !UNITY_EDITOR
+            if (!YM_isSupported()) {
+                return;
+            }
+#endif
+
+#if UNITY_WEBGL && !UNITY_EDITOR
             YM_hit(url);
 #endif
         }
 
         public void ReachGoal(string target)
         {
+#if UNITY_WEBGL && !UNITY_EDITOR
+            if (!YM_isSupported()) {
+                return;
+            }
+#endif
+
 #if UNITY_WEBGL && !UNITY_EDITOR
             YM_reachGoal(target);
 #endif
