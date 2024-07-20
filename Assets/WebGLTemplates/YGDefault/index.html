@@ -160,6 +160,8 @@
       const yandexUrl = ['y', 'a', 'n', 'd', 'e', 'x', '.', 'n', 'e', 't'].join('');
       
       if (url.hostname.includes(yandexUrl) || url.hash.includes('yandex')) {
+        window.ysdkSupported = true;
+
         YaGames
           .init()
           .then(ysdk => {

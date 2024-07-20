@@ -1,6 +1,6 @@
 mergeInto(LibraryManager.library, {
     YG_isSupported: function() {
-		return typeof ysdk != "undefined";
+		return typeof window.ysdkSupported != "undefined" && window.ysdkSupported;
 	},
 
     YG_getLang: function() {
